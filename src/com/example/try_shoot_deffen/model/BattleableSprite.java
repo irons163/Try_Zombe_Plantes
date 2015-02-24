@@ -1,5 +1,7 @@
 package com.example.try_shoot_deffen.model;
 
+import java.util.List;
+
 import com.example.try_gameengine.framework.Sprite;
 import com.example.try_shoot_deffen.effect.IEffect;
 import com.example.try_shoot_deffen.model.Cat.ShootType;
@@ -19,8 +21,7 @@ public class BattleableSprite extends Sprite implements Battleable{
 		attributeInfo.setHp(20);
 	}
 
-	@Override
-	public boolean isInBattleRange(BattleableSprite battleableSprite) {
+	protected boolean isInBattleRange(BattleableSprite battleableSprite) {
 		// TODO Auto-generated method stub
 		boolean isInBattleRange;
 		if(weapenSprite!=null)
@@ -31,8 +32,7 @@ public class BattleableSprite extends Sprite implements Battleable{
 		return isInBattleRange;
 	}
 
-	@Override
-	public void attack(BattleableSprite battleable) {
+	protected void attack(BattleableSprite battleable) {
 		// TODO Auto-generated method stub
 		
 		AttributeInfo attributeInfoNew;
@@ -52,6 +52,26 @@ public class BattleableSprite extends Sprite implements Battleable{
 //			battleable.beAttacked(weapenSprite);
 //		else
 //			battleable.beAttacked(null);
+	}
+	
+	@Override
+	public void checkIfInBattleRangeThenAttack(
+			List<BattleableSprite> battleables) {
+		// TODO Auto-generated method stub
+		if(weapenSprite!=null)
+			weapenSprite.checkIfInBattleRangeThenAttack(battleables);
+		else
+		for(BattleableSprite battleableSprite : battleables){
+//			boolean isInBattleRange = isInBattleRange(battleableSprite);
+//			if(isInBattleRange){
+//				attack(battleableSprite);
+//			}
+			
+			
+				collisionRectF.contains(battleableSprite.collisionRectF);
+			
+		}
+		
 	}
 
 	public float getSpeed(){
@@ -105,4 +125,6 @@ public class BattleableSprite extends Sprite implements Battleable{
 			break;
 		}
 	}
+
+
 }

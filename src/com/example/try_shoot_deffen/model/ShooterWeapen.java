@@ -27,12 +27,12 @@ public class ShooterWeapen extends WeapenSprite{
 	public boolean isInBattleRange(BattleableSprite battleable) {
 		// TODO Auto-generated method stub
 		
-		for(Bullets bullets : bulletsList){
-			Boolean isInBattleRange = bullets.isInBattleRange(battleable);
-			if(isInBattleRange){
-				bullets.attack(battleable);
-			}
-		}
+//		for(Bullets bullets : bulletsList){
+//			Boolean isInBattleRange = bullets.isInBattleRange(battleable);
+//			if(isInBattleRange){
+//				bullets.attack(battleable);
+//			}
+//		}
 		
 		return super.isInBattleRange(battleable);
 	}
@@ -75,6 +75,21 @@ public class ShooterWeapen extends WeapenSprite{
 		bulletsList.add(bullets);
 	}
 	
+	@Override
+	public void checkIfInBattleRangeThenAttack(
+			List<BattleableSprite> battleables) {
+		// TODO Auto-generated method stub
+		for(BattleableSprite battleableSprite : battleables){
+			boolean isInBattleRange = isInBattleRange(battleableSprite);
+			if(isInBattleRange){
+				attack(battleableSprite);
+			}
+		}
+		
+		for(Bullets bullets : bulletsList){
+			bullets.checkIfInBattleRangeThenAttack(battleables);
+		}
+	}
 	
 	Attribute attribute;
 	AttributeHelper attributeHelper;

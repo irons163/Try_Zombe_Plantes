@@ -2,6 +2,7 @@ package com.example.try_shoot_deffen.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
@@ -692,6 +693,18 @@ public void attack(BattleableSprite battleable) {
 		IEffect effect = getWeapenEffect();
 		if(getWeapenEffect()!=null)
 			effect.doEffect(this, battleable);
+}
+
+@Override
+public void checkIfInBattleRangeThenAttack(
+		List<BattleableSprite> battleables) {
+	// TODO Auto-generated method stub
+	for(BattleableSprite battleableSprite : battleables){
+		boolean isInBattleRange = isInBattleRange(battleableSprite);
+		if(isInBattleRange){
+			attack(battleableSprite);
+		}
+	}
 }
 
 }

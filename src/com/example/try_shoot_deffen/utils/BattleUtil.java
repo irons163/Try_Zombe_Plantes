@@ -1,15 +1,25 @@
 package com.example.try_shoot_deffen.utils;
 
+import java.util.List;
+
+import android.util.MonthDisplayHelper;
+
 import com.example.try_shoot_deffen.model.BattleableSprite;
 
 public class BattleUtil {
 	
-	public static void checkBattle(BattleableSprite battleableSprite, BattleableSprite battleableSprite2){
-		if(battleableSprite.isInBattleRange(battleableSprite2)){
-			battleableSprite.attack(battleableSprite2);
+	public static void checkBattle(List<BattleableSprite> battleableSpriteDefeners, List<BattleableSprite> battleableSpriteMonsters){
+//		if(battleableSprite.isInBattleRange(battleableSprite2)){
+//			battleableSprite.attack(battleableSprite2);
+//		}
+//		if(battleableSprite2.isInBattleRange(battleableSprite)){
+//			battleableSprite2.attack(battleableSprite);
+//		}
+		for(BattleableSprite defener : battleableSpriteDefeners){
+			defener.checkIfInBattleRangeThenAttack(battleableSpriteMonsters);
 		}
-		if(battleableSprite2.isInBattleRange(battleableSprite)){
-			battleableSprite2.attack(battleableSprite);
+		for(BattleableSprite monster : battleableSpriteMonsters){
+			monster.checkIfInBattleRangeThenAttack(battleableSpriteDefeners);
 		}
 	}
 	

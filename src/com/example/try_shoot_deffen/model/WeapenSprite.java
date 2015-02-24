@@ -1,6 +1,7 @@
 package com.example.try_shoot_deffen.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import android.util.Log;
 
@@ -41,8 +42,7 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 //		return false;
 //	}
 
-	@Override
-	public boolean isInBattleRange(BattleableSprite battleable) {
+	protected boolean isInBattleRange(BattleableSprite battleable) {
 		// TODO Auto-generated method stub
 		double distance = Math.pow(getCenterX() - battleable.getCenterX(), 2) + Math.pow(getCenterY() - battleable.getCenterY(), 2);
 		distance = Math.sqrt(distance);
@@ -51,6 +51,23 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 			return true;
 		}
 		return false;
+	}
+
+	protected void attack(BattleableSprite battleable) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void checkIfInBattleRangeThenAttack(
+			List<BattleableSprite> battleables) {
+		// TODO Auto-generated method stub
+		for(BattleableSprite battleableSprite : battleables){
+			boolean isInBattleRange = isInBattleRange(battleableSprite);
+			if(isInBattleRange){ 
+				attack(battleableSprite);
+			}
+		}
 	}
 
 	@Override
@@ -68,17 +85,8 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 	}
 
 	@Override
-	public void attack(BattleableSprite battleable) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void beAttacked(WeapenSprite weapenSprite) {
 		// TODO Auto-generated method stub
 		
-	}
-
-
-	
+	}	
 }

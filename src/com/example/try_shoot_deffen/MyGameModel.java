@@ -142,7 +142,7 @@ public class MyGameModel extends GameModel{
 	}
 	
 	private void checkMapDefenerInBattle(){
-		mapTileUtil.checkMapDefenerInBattle(zombes);
+		mapTileUtil.checkMapDefenersBattleWithMonsters(zombes);
 	}
 
 	@Override
@@ -156,7 +156,9 @@ public class MyGameModel extends GameModel{
 		
 		mapTileUtil.frameTrig();
 		
-		BattleUtil.checkBattle(player, zombe);
+//		BattleUtil.checkBattle(player, zombe);
+		
+//		BattleUtil.checkBattle(battleableSpriteDefeners, battleableSpriteMonsters);
 		
 		checkMapDefenerInBattle();
 		

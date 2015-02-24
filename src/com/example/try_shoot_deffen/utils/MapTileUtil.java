@@ -1,5 +1,6 @@
 package com.example.try_shoot_deffen.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Canvas;
@@ -27,17 +28,22 @@ public class MapTileUtil {
 		}
 	}
 	
-	public void checkMapDefenerInBattle(List<BattleableSprite> battleableSprites){
+	public void checkMapDefenersBattleWithMonsters(List<BattleableSprite> battleableSpriteMonsters){
 		for(int i = 0; i < mapTileObjects.length; i++){
 			for(int j = 0; j < mapTileObjects[i].length; j++){
 //				mapTileObjects[i][j] = new MapTileObject(i*100, j*100, false);
 				MapTileObject mapTileObject = mapTileObjects[i][j];
 				BattleableSprite defener = mapTileObject.getSprite();
+//				if(defener!=null){
+//					for(BattleableSprite monster : battleableSpriteMonsters){
+//						BattleUtil.checkBattle(defener, battleableSpriteMonsters);
+//					}		
+//				}
+				List<BattleableSprite> battleableSpriteDefeners = new ArrayList<BattleableSprite>();
 				if(defener!=null){
-					for(BattleableSprite monster : battleableSprites){
-						BattleUtil.checkBattle(defener, monster);
-					}		
+					battleableSpriteDefeners.add(defener);
 				}
+				BattleUtil.checkBattle(battleableSpriteDefeners, battleableSpriteMonsters);
 			}
 		}
 	}
