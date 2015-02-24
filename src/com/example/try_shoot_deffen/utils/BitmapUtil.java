@@ -219,7 +219,7 @@ public static Bitmap bar;
 		CommonUtil.cat_bg_height = CommonUtil.gameBoardHeight/149.0f*37;
 		float cat_hright = CommonUtil.cat_bg_height - cat_hp_bar_frame.getHeight();
 		
-		//?¨è??ªæ˜¯å®Œå…¨?‡é??„æ?æ³ä?
+		//?ï¿½ï¿½??ï¿½æ˜¯å®Œå…¨?ï¿½ï¿½??ï¿½ï¿½?æ³ï¿½?
 //		cat01_1 = createBitmap(cat01_1, cat_hright/cat01_1.getHeight());
 //		cat01_2 = createBitmap(cat01_2, cat_hright/cat01_2.getHeight());
 //		cat01_3 = createBitmap(cat01_3, cat_hright/cat01_3.getHeight());
@@ -229,7 +229,7 @@ public static Bitmap bar;
 //		cat02_3 = createBitmap(cat02_3, cat_hright/cat02_3.getHeight());
 //		cat02_4 = createBitmap(cat02_4, cat_hright/cat02_4.getHeight());
 		
-		//è²“å’ª?„ä??¢æ??™ç™½
+		//è²“å’ª?ï¿½ï¿½??ï¿½ï¿½??ï¿½ç™½
 		cat01_1 = createBitmap(cat01_1, CommonUtil.cat_bg_height/cat01_1.getHeight());
 		cat01_2 = createBitmap(cat01_2, CommonUtil.cat_bg_height/cat01_2.getHeight());
 		cat01_3 = createBitmap(cat01_3, CommonUtil.cat_bg_height/cat01_3.getHeight());
@@ -288,13 +288,17 @@ public static Bitmap bar;
 		dot = BitmapFactory.decodeResource(context.getResources(), R.drawable.dot);
 		
 		float hamsterPersentByScreen = 6.0f;
-		hamster = createBitmap(hamster, CommonUtil.screenWidth/hamsterPersentByScreen*7/hamster.getWidth());
+//		hamster = createBitmap(hamster, CommonUtil.screenWidth/hamsterPersentByScreen*7/hamster.getWidth());
+		hamster = createBitmap(hamster, CommonUtil.screenHeight/hamsterPersentByScreen*2/hamster.getHeight());
 		
 		float handPersentByScreen = 4.0f;
-		hand = brick_once_bmp = createBitmap(brick_once_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_once_bmp.getWidth());
-		brick_twice_bmp = createBitmap(brick_twice_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_twice_bmp.getWidth());
-		brick_three_bmp = createBitmap(brick_three_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_three_bmp.getWidth());
-		    
+//		hand = brick_once_bmp = createBitmap(brick_once_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_once_bmp.getWidth());
+//		brick_twice_bmp = createBitmap(brick_twice_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_twice_bmp.getWidth());
+//		brick_three_bmp = createBitmap(brick_three_bmp, CommonUtil.screenWidth/handPersentByScreen*7/brick_three_bmp.getWidth());
+		hand = brick_once_bmp = createBitmap(brick_once_bmp, CommonUtil.screenHeight/hamsterPersentByScreen*2/brick_once_bmp.getHeight());
+		brick_twice_bmp = createBitmap(brick_twice_bmp, CommonUtil.screenHeight/hamsterPersentByScreen*2/brick_twice_bmp.getHeight());
+		brick_three_bmp = createBitmap(brick_three_bmp, CommonUtil.screenHeight/hamsterPersentByScreen*2/brick_three_bmp.getHeight());    
+		
 		tool_DoubleBullets_bmp = createBitmap(tool_DoubleBullets_bmp, CommonUtil.screenWidth/handPersentByScreen/3.0f/tool_DoubleBullets_bmp.getWidth());
 		tool_DoubleBullets_bmp02 = createBitmap(tool_DoubleBullets_bmp02, CommonUtil.screenWidth/handPersentByScreen/2.0f/tool_DoubleBullets_bmp02.getWidth());
 		tool_TripleBullets_bmp = createBitmap(tool_TripleBullets_bmp, CommonUtil.screenWidth/handPersentByScreen/3.0f/tool_TripleBullets_bmp.getWidth());

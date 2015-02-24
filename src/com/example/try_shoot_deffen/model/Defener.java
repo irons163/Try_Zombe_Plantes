@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.example.try_gameengine.framework.IActionListener;
 import com.example.try_gameengine.framework.Sprite;
 import com.example.try_shoot_deffen.utils.Attribute;
 import com.example.try_shoot_deffen.utils.AttributeHelper;
+import com.example.try_shoot_deffen.utils.BattleUtil;
 import com.example.try_shoot_deffen.utils.BitmapUtil;
 
-public class Player extends BattleableSprite{
+public class Defener extends BattleableSprite{
 	Attribute attribute;
 	public AttributeHelper attributeHelper;
 	long lastShootTime;
@@ -71,14 +74,14 @@ public class Player extends BattleableSprite{
 		}
 	}
 	
-	public Player(float x, float y, boolean autoAdd) {
+	public Defener(float x, float y, boolean autoAdd) {
 		super(x, y, autoAdd);
 		// TODO Auto-generated constructor stub
 //		setBitmapAndFrameWH(bitmap, frameWidth, frameHeight);
 		
 		setBitmapAndFrameWH(BitmapUtil.hamster, BitmapUtil.hamster.getWidth()/7, BitmapUtil.hamster.getHeight()/2);
 		
-		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{0,10,0,1}, new int[]{0,5,5,5}, true, new IActionListener() {
+		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{0,10,0,1}, BattleUtil.changeToNew(new int[]{0,5,5,5}, getSpeed()), true, new IActionListener() {
 			
 			@Override
 			public void beforeChangeFrame(int nextFrameId) {
@@ -159,6 +162,9 @@ public class Player extends BattleableSprite{
 		// TODO Auto-generated method stub
 		super.frameTrig();
 		
+		if(weapenSprite!=null)
+			weapenSprite.frameTrig();
+		
 //		if(isPrepareToShoot){
 //			this.shoot();
 //			isPrepareToShoot = false;
@@ -176,6 +182,15 @@ public class Player extends BattleableSprite{
 //				bullet.frameTrig();
 //			}	
 //		}
+	}
+	
+	@Override
+	public void drawSelf(Canvas canvas, Paint paint) {
+		// TODO Auto-generated method stub
+		super.drawSelf(canvas, paint);
+		
+		if(weapenSprite!=null)
+			weapenSprite.drawSelf(canvas, paint);
 	}
 	
 	private void injuring(){
@@ -210,4 +225,26 @@ public class Player extends BattleableSprite{
 	public void setBulletLevel5(){
 		shootBulletLevel = 4;
 	}
+	
+//	WeapenSprite weapen;
+	
+	public void setWeapen(WeapenSprite weapen){
+		this.weapenSprite = weapen;
+	}
+	
+//	@Override
+//	public void attack(BattleableSprite battleable) {
+//		// TODO Auto-generated method stub
+//		shoot();
+//		
+//		AttributeInfo attributeInfoNew;
+//		if(weapenSprite!=null){
+//			weapenSprite.attack(battleable);
+//			attributeInfoNew = weapenSprite.getNewAttributeInfo(attributeInfo);
+//			
+//		}
+//		AttributeInfo attributeInfoBeAttacked = battleable.getAttributeInfo();
+//		
+//		
+//	}
 }

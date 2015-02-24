@@ -32,7 +32,7 @@ import com.example.try_shoot_deffen.utils.EffectUtil;
 
 public class Cat extends Sprite {
 	List<MovementAction> movementActions = new ArrayList<MovementAction>();
-	public List<Monster> hands = new CopyOnWriteArrayList<Monster>();
+	public List<Bullets> hands = new CopyOnWriteArrayList<Bullets>();
 	MyGameModel gameModel;
 	Context context;
 	Attribute attribute;
@@ -365,7 +365,7 @@ enum CatAction{
 				
 			switch (shootType) {
 			case ThreeHit:
-				Monster hand = new Monster(context, this.getCenterX() , this.getY()+h, false, Monster.TYPE_SINGLE_MID);
+				Bullets hand = new Bullets(context, this.getCenterX() , this.getY()+h, false, Bullets.TYPE_SINGLE_MID);
 //				hand.setX(hand.getX() - hand.w/2);
 				hand.setPosition(hand.getX() - hand.w/2, hand.getY() - hand.h/4);
 				hand.set(0, gameModel);
@@ -375,7 +375,7 @@ enum CatAction{
 				hands.add(hand);
 				break;
 			case TripleTwoHit:
-				hand = new Monster(context, this.getCenterX(), this.getY()+h, false, Monster.TYPE_THREE_HAND_LEFT);
+				hand = new Bullets(context, this.getCenterX(), this.getY()+h, false, Bullets.TYPE_THREE_HAND_LEFT);
 //				hand.setX(hand.getX() - hand.w/2);
 				hand.setPosition(hand.getX() - hand.w/2, hand.getY() - hand.h/4);
 				hand.set(0, gameModel);
@@ -383,7 +383,7 @@ enum CatAction{
 				hand.setMoveRage(0, 0, CommonUtil.gameBoardHeight,
 						CommonUtil.screenWidth);
 				hands.add(hand);
-				hand = new Monster(context, this.getCenterX(), this.getY()+h, false, Monster.TYPE_THREE_HAND_MID);
+				hand = new Bullets(context, this.getCenterX(), this.getY()+h, false, Bullets.TYPE_THREE_HAND_MID);
 //				hand.setX(hand.getX() - hand.w/2);
 				hand.setPosition(hand.getX() - hand.w/2, hand.getY() - hand.h/4);
 				hand.set(0, gameModel);
@@ -391,7 +391,7 @@ enum CatAction{
 				hand.setMoveRage(0, 0, CommonUtil.gameBoardHeight,
 						CommonUtil.screenWidth);
 				hands.add(hand);
-				hand = new Monster(context, this.getCenterX(), this.getY()+h, false, Monster.TYPE_THREE_HAND_RIGHT);
+				hand = new Bullets(context, this.getCenterX(), this.getY()+h, false, Bullets.TYPE_THREE_HAND_RIGHT);
 //				hand.setX(hand.getX() - hand.w/2);
 				hand.setPosition(hand.getX() - hand.w/2, hand.getY() - hand.h/4);
 				hand.set(0, gameModel);
@@ -419,7 +419,7 @@ enum CatAction{
 //				hands.add(hand);
 //				break;
 			default:
-				hand = new Monster(context, this.getCenterX(), this.getY()+h, false, Monster.TYPE_SINGLE_MID);
+				hand = new Bullets(context, this.getCenterX(), this.getY()+h, false, Bullets.TYPE_SINGLE_MID);
 //				hand.setX(hand.getX() - hand.w/2);
 				hand.setPosition(hand.getX() - hand.w/2, hand.getY() - hand.h/4);
 				hand.set(0, gameModel);
@@ -448,7 +448,7 @@ enum CatAction{
 		super.frameTrig();
 
 		if(!isInDing())
-		for (Monster hand : hands) {
+		for (Bullets hand : hands) {
 			hand.frameTrig();
 		}
 	}
@@ -478,7 +478,7 @@ enum CatAction{
 			}
 		}
 		
-		for (Monster hand : hands) {
+		for (Bullets hand : hands) {
 			if(gameModel.isAllScreenQuake){
 			if(isQuakeLeft)
 				hand.drawOffsetX = -20;

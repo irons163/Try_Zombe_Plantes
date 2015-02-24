@@ -10,21 +10,25 @@ import android.view.MotionEvent;
 
 import com.example.try_gameengine.framework.Data;
 import com.example.try_gameengine.framework.GameModel;
+import com.example.try_shoot_deffen.model.BattleableSprite;
 import com.example.try_shoot_deffen.model.Cat;
+import com.example.try_shoot_deffen.model.DefenerBuilder;
 import com.example.try_shoot_deffen.model.MapTileObject;
-import com.example.try_shoot_deffen.model.Monster;
-import com.example.try_shoot_deffen.model.Player;
+import com.example.try_shoot_deffen.model.Bullets;
+import com.example.try_shoot_deffen.model.Defener;
+import com.example.try_shoot_deffen.model.Zombe;
+import com.example.try_shoot_deffen.utils.BattleUtil;
 import com.example.try_shoot_deffen.utils.CommonUtil;
 import com.example.try_shoot_deffen.utils.MapTileUtil;
 
 public class MyGameModel extends GameModel{
-	public Player player;
+	public Defener player;
 //	Hamster hamster;
 	public Cat cat;
 	
-	Monster monster;
+//	Bullets bullets;
 	
-	List<Monster> monsters = new ArrayList<Monster>();
+//	List<Bullets> bulletsList = new ArrayList<Bullets>();
 	
 	int ballLevel = 0;
 	public int hitBrickLevelDownCount;
@@ -51,19 +55,27 @@ public class MyGameModel extends GameModel{
 	
 	private MapTileUtil mapTileUtil;
 	
+	private Zombe zombe;
+	
+	private List<BattleableSprite> zombes = new ArrayList<BattleableSprite>();
+	
 	public MyGameModel(Context context, Data data) {
 		super(context, data);
 		// TODO Auto-generated constructor stub
 	
-		player = new Player(100, 100, false);
+		player = new Defener(100, 100, false);
 		player.setPosition(500, 1000);
 		
-		monster = new Monster(context, 100, 100, false, 0);
-		monster.setMoveRage(0, 0, CommonUtil.screenHeight,
-				CommonUtil.screenWidth);
-		monster.setType(0);
+//		bullets = new Bullets(context, 100, 100, false, 0);
+//		bullets.setMoveRage(0, 0, CommonUtil.screenHeight,
+//				CommonUtil.screenWidth);
+//		bullets.setType(0);
 		
 		mapTileUtil = new MapTileUtil();
+		
+		zombe = new Zombe(800, 100, false);
+		zombe.setPosition(1000, 500);
+		zombes.add(zombe);
 	}
 	
 	@Override
@@ -122,10 +134,15 @@ public class MyGameModel extends GameModel{
 		
 		MapTileObject mapTileObject = mapTileUtil.checkTouchXY(x, y);
 		if(mapTileObject != null){
-			mapTileObject.setSprite(new Player(mapTileObject.getX(), mapTileObject.getY(), false));
+//			mapTileObject.setSprite(new Defener(mapTileObject.getX(), mapTileObject.getY(), false));
+			mapTileObject.setSprite(DefenerBuilder.createHamster1(context, mapTileObject.getX(), mapTileObject.getY()));
 		}
 		
 		super.onTouchEvent(event);
+	}
+	
+	private void checkMapDefenerInBattle(){
+		mapTileUtil.checkMapDefenerInBattle(zombes);
 	}
 
 	@Override
@@ -133,9 +150,15 @@ public class MyGameModel extends GameModel{
 		// TODO Auto-generated method stub
 		super.process();
 		
-		monster.frameTrig();
+//		bullets.frameTrig();
+		
+		zombe.frameTrig();
 		
 		mapTileUtil.frameTrig();
+		
+		BattleUtil.checkBattle(player, zombe);
+		
+		checkMapDefenerInBattle();
 		
 //		monsters.add(new Monster(context, x, y, autoAdd, type_direction);
 	}
@@ -147,7 +170,9 @@ public class MyGameModel extends GameModel{
 		
 		player.drawSelf(canvas, null);
 		
-		monster.drawSelf(canvas, null);
+//		bullets.drawSelf(canvas, null);
+		
+		zombe.drawSelf(canvas, null);
 		
 		mapTileUtil.drawSelf(canvas, null);
 	}

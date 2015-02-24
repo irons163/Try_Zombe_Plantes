@@ -6,7 +6,7 @@ import java.util.Random;
 import com.example.try_shoot_deffen.MyGameModel;
 import com.example.try_shoot_deffen.model.Bullet;
 import com.example.try_shoot_deffen.model.Cat;
-import com.example.try_shoot_deffen.model.Monster;
+import com.example.try_shoot_deffen.model.Bullets;
 
 public class EffectUtil {
 	// BallView ballView;
@@ -17,7 +17,7 @@ public class EffectUtil {
 	final int TIME_EFFECT_COUNT = 60;
 	int timeCount = TIME_EFFECT_COUNT;
 	ToolUtil toolUtil;
-	Monster brickUtil;
+	Bullets brickUtil;
 	public boolean ironsCombo = false;
 //	private Bullet ball;
 	Cat cat;
@@ -27,7 +27,7 @@ public class EffectUtil {
 		Once, Twice, Three, Iron, Time, Tool, BallLevelUP, Split
 	}
 
-	public EffectUtil(MyGameModel ballView, Monster brickUtil) {
+	public EffectUtil(MyGameModel ballView, Bullets brickUtil) {
 		this.ballView = ballView;
 		this.brickUtil = brickUtil;
 		// setRandomEffectType();
@@ -148,13 +148,13 @@ public class EffectUtil {
 	}
 	
 	private void newSplitHand(int hp1, int hp2){
-		Monster hand = brickUtil.newHand(Monster.TYPE_TWO_HAND_LEFT_UP);
+		Bullets hand = brickUtil.newHand(Bullets.TYPE_TWO_HAND_LEFT_UP);
 		hand.set(0, ballView);
 		hand.setType(hp1);
 //		hand.setMoveRage(brickUtil.);
 		ballView.cat.hands.add(hand);
 		
-		hand = brickUtil.newHand(Monster.TYPE_TWO_HAND_RIGHT_UP);
+		hand = brickUtil.newHand(Bullets.TYPE_TWO_HAND_RIGHT_UP);
 		hand.set(0, ballView);
 		hand.setType(hp2);
 //		hand.setMoveRage(0,0,CommonUtil.screenHeight,CommonUtil.screenWidth);

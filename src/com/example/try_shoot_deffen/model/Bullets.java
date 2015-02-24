@@ -7,6 +7,7 @@ import java.util.Random;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Log;
@@ -14,18 +15,21 @@ import android.util.Log;
 import com.example.try_gameengine.action.MovementAction;
 import com.example.try_gameengine.action.MovementActionInfo;
 import com.example.try_gameengine.action.MovementActionItemBaseReugularFPS;
+import com.example.try_gameengine.action.MovementActionSet;
 import com.example.try_gameengine.action.MovementActionSetWithThreadPool;
 import com.example.try_gameengine.action.MovementAtionController;
 import com.example.try_gameengine.framework.Sprite;
 import com.example.try_gameengine.script.ScriptPaser;
 import com.example.try_shoot_deffen.MyGameModel;
+import com.example.try_shoot_deffen.effect.IEffect;
+import com.example.try_shoot_deffen.model.BattleableSprite.BattleSpriteInjureType;
 import com.example.try_shoot_deffen.utils.BitmapUtil;
 import com.example.try_shoot_deffen.utils.CommonUtil;
 import com.example.try_shoot_deffen.utils.EffectUtil;
 
-public class Monster extends BattleableSprite{
+public class Bullets extends WeapenSprite{
 
-	MovementAction movementActionReflect;
+	MovementAction movementActionShoot;
 	MovementAction movementAction;
 	double limit;
 	final int Down = 0;
@@ -91,7 +95,7 @@ enum HandAnimaton {
 		}
 	}
 
-	public Monster(Context context, float x, float y, boolean autoAdd, int type_direction) {
+	public Bullets(Context context, float x, float y, boolean autoAdd, int type_direction) {
 		super(x, y, autoAdd);
 		// TODO Auto-generated constructor stub
 //		setBitmapAndAutoChangeWH(BitmapUtil.hand);
@@ -162,7 +166,7 @@ enum HandAnimaton {
 				dx = scriptPaser.getDx();
 				
 				
-				Monster.this.move(dx, dy);
+				Bullets.this.move(dx, dy);
 			}
 		});
 		
@@ -183,8 +187,8 @@ enum HandAnimaton {
 				// TODO Auto-generated method stub
 				if(!isMoveable)
 					return;
-				float bottom = Monster.this.getY()+h;
-				float top = Monster.this.getY();
+				float bottom = Bullets.this.getY()+h;
+				float top = Bullets.this.getY();
 				Log.e("hand bottom", bottom + "");
 				
 //				if(type_direction == TYPE_TWO_HAND_LEFT_UP || type_direction == TYPE_TWO_HAND_RIGHT_UP)
@@ -221,28 +225,6 @@ enum HandAnimaton {
 				
 				move(dx, dy);
 				
-				scriptPaser.nextScriptLine();
-//				if(scriptPaser.isPause()){
-//					if(scriptPaser.getDx()>0){
-////						setAction(SheepMove.StandR.getName());
-//					}else{
-////						setAction(SheepMove.Stand.getName());
-//					}
-//					
-//					isResum = true;
-//				}else if(isResum && scriptPaser.isMove()){
-//					float dxx = scriptPaser.getDx();
-//					if(dxx>0){
-////						setAction(SheepMove.MoveR.getName());
-//					}else{
-////						setAction(SheepMove.Move.getName());
-//					}
-//					
-//					isResum = false;
-//				}
-				
-				scriptPaser.triggerAndDoCommandInSprite();
-				
 			}
 		});
 		
@@ -250,68 +232,39 @@ enum HandAnimaton {
 		
 		movementAction.start();
 		
-		setMovementAction(movementAction);
+//		setMovementAction(movementAction);
 		
 		
 		
-//		movementActionReflect = new MovementActionSet();
-//		info = new MovementActionInfo(2000, 1, 0, -4.0f, "", null, false);
-//		MovementActionItemBaseReugularFPS reFlectaction = new MovementActionItemBaseReugularFPS(info);
-//		movementActionReflect.addMovementAction(reFlectaction);
-//		
-//		movementActionReflect.setTimerOnTickListener(new MovementAction.TimerOnTickListener() {
-//			
-//			@Override
-//			public void onTick(float dx, float dy) {
-//				// TODO Auto-generated method stub
-//				
-//
-//				
-//				move(dx, dy);
-//				
-//				scriptPaser.nextScriptLine();
-////				if(scriptPaser.isPause()){
-////					if(scriptPaser.getDx()>0){
-//////						setAction(SheepMove.StandR.getName());
-////					}else{
-//////						setAction(SheepMove.Stand.getName());
-////					}
-////					
-////					isResum = true;
-////				}else if(isResum && scriptPaser.isMove()){
-////					float dxx = scriptPaser.getDx();
-////					if(dxx>0){
-//////						setAction(SheepMove.MoveR.getName());
-////					}else{
-//////						setAction(SheepMove.Move.getName());
-////					}
-////					
-////					isResum = false;
-////				}
-//				
-//				scriptPaser.triggerAndDoCommandInSprite();
-//				
-//			}
-//		});
+		movementActionShoot = new MovementActionSetWithThreadPool();
+		info = new MovementActionInfo(2000, 1, 2, 0, "", null, false);
+		MovementActionItemBaseReugularFPS reFlectaction = new MovementActionItemBaseReugularFPS(info);
+		movementActionShoot.addMovementAction(reFlectaction);
 		
-//		movementActionReflect.initMovementAction();
-//		
-//		movementActionReflect.start();
+		movementActionShoot.setTimerOnTickListener(new MovementAction.TimerOnTickListener() {
+			
+			@Override
+			public void onTick(float dx, float dy) {
+				// TODO Auto-generated method stub
+				
 
+				
+				move(dx, dy);
+				
+//				scriptPaser.nextScriptLine();
+
+				
+//				scriptPaser.triggerAndDoCommandInSprite();
+				
+			}
+		});
 		
-//		movementAction = new MovementActionSet();
-//		info = new MovementActionInfo(total, delay, dx, dy, description, rotationController, enableGravity, sprite, spriteActionName);
-//		action = new MovementActionItemBaseReugularFPS(info);
-//		movementAction.addMovementAction(action);
-//		movementActions.add(movementAction);
-//		movementAction.addMovementAction(movementAction);
-//		
-//		movementAction = new MovementActionSet();
-//		info = new MovementActionInfo(total, delay, dx, dy, description, rotationController, enableGravity, sprite, spriteActionName);
-//		action = new MovementActionItemBaseReugularFPS(info);
-//		movementAction.addMovementAction(action);
-//		movementActions.add(movementAction);
-//		movementAction.addMovementAction(movementAction);
+		movementActionShoot.initMovementAction();
+		
+		movementActionShoot.start();
+		
+		setMovementAction(movementActionShoot);
+
 	}
 	
 	
@@ -591,7 +544,7 @@ public float getAngle(){
 }
 
 public void setReflect(){
-	setMovementAction(movementActionReflect);
+	setMovementAction(movementActionShoot);
 }
 
 @Override
@@ -613,8 +566,8 @@ public void setMoveRage(float x, float y, float height, float width){
 	}
 }
 
-public Monster newHand(int type_direction){
-	Monster hand =new Monster(context, getX(), getY(), false, type_direction);
+public Bullets newHand(int type_direction){
+	Bullets hand =new Bullets(context, getX(), getY(), false, type_direction);
 	hand.setPosition(getX(), getY());
 	hand.setMoveRage(new RectF(moveRage.left, moveRage.top, moveRage.right, moveRage.bottom));
 //	hand.setMoveRage(0, 0, CommonUtil.gameBoardHeight,
@@ -704,7 +657,12 @@ public void drawSelf(Canvas canvas, Paint paint) {
 		}
 	
 
-	
+		Matrix matrix = new Matrix();
+//		matrix.mapRect(dst);
+//		matrix.postTranslate(getX(), getY());
+		matrix.postRotate(-90, getX()+w/2.0f,getY()+h/2.0f);
+		spriteMatrix = matrix;
+//		canvas.drawBitmap(bitmap, matrix, paint);
 	
 	
 	super.drawSelf(canvas, paint);
@@ -712,6 +670,28 @@ public void drawSelf(Canvas canvas, Paint paint) {
 
 public void destory(){
 	movementAction.controller.cancelAllMove();
+}
+
+interface BulletsEventListener{
+	void willAttack(BattleableSprite battleableSprite);
+}
+
+BulletsEventListener bulletsEventListener;
+
+public void setBulletsEventListener(BulletsEventListener bulletsEventListener){
+	this.bulletsEventListener = bulletsEventListener;
+}
+
+@Override
+public void attack(BattleableSprite battleable) {
+	// TODO Auto-generated method stub
+//	super.attack(battleable);
+	
+	bulletsEventListener.willAttack(battleable);
+	
+		IEffect effect = getWeapenEffect();
+		if(getWeapenEffect()!=null)
+			effect.doEffect(this, battleable);
 }
 
 }

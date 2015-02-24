@@ -6,7 +6,7 @@ import java.util.Random;
 
 import com.example.try_shoot_deffen.MyGameModel;
 import com.example.try_shoot_deffen.model.Bullet;
-import com.example.try_shoot_deffen.model.Monster;
+import com.example.try_shoot_deffen.model.Bullets;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,7 +40,7 @@ public class ToolUtil {
 		DoubleBullet, TripleBullet, FrequenceUpBullet, DoublePowerBullet, CureAddHp
 	}
 
-	public ToolUtil(MyGameModel ballView, Monster brickUtil) {
+	public ToolUtil(MyGameModel ballView, Bullets brickUtil) {
 		this.ballView = ballView;		
 		
 		setRandomEffectType();
@@ -48,7 +48,7 @@ public class ToolUtil {
 	}
 	
 	
-	public void setXY(Monster brickUtil){
+	public void setXY(Bullets brickUtil){
 		setToolObjectXY(brickUtil.dst.left, brickUtil.dst.top, brickUtil.dst.right,
 				brickUtil.dst.bottom);
 	}

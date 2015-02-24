@@ -1,8 +1,11 @@
 package com.example.try_shoot_deffen.utils;
 
+import java.util.List;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.example.try_shoot_deffen.model.BattleableSprite;
 import com.example.try_shoot_deffen.model.MapTileObject;
 
 public class MapTileUtil {
@@ -18,16 +21,23 @@ public class MapTileUtil {
 	private void init(){
 		for(int i = 0; i < mapTileObjects.length; i++){
 			for(int j = 0; j < mapTileObjects[i].length; j++){
-				mapTileObjects[i][j] = new MapTileObject(i*100+offsetX, j*100+offsetY, false);
+				mapTileObjects[i][j] = new MapTileObject(i*150+offsetX, j*150+offsetY, false);
 				mapTileObjects[i][j].setBitmapAndAutoChangeWH(BitmapUtil.hp);
 			}
 		}
 	}
 	
-	public void checkCollision(){
+	public void checkMapDefenerInBattle(List<BattleableSprite> battleableSprites){
 		for(int i = 0; i < mapTileObjects.length; i++){
 			for(int j = 0; j < mapTileObjects[i].length; j++){
 //				mapTileObjects[i][j] = new MapTileObject(i*100, j*100, false);
+				MapTileObject mapTileObject = mapTileObjects[i][j];
+				BattleableSprite defener = mapTileObject.getSprite();
+				if(defener!=null){
+					for(BattleableSprite monster : battleableSprites){
+						BattleUtil.checkBattle(defener, monster);
+					}		
+				}
 			}
 		}
 	}

@@ -13,4 +13,17 @@ public class BattleUtil {
 		}
 	}
 	
+	public static int[] changeToNew(int[] olds, float time){
+		int[] news = new int[olds.length];
+		for(int i = 0; i<olds.length; i++){
+			int t = olds[i];
+			news[i] = Math.round(t*time);
+		}
+		return news;
+	}
+	
+	public static int changeToNew(int old, float time){
+		int thenew = Math.round(old*time);
+		return thenew;
+	}
 }
