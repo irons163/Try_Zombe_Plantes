@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.example.try_shoot_deffen.MyGameModel;
-import com.example.try_shoot_deffen.model.Bullet;
 import com.example.try_shoot_deffen.model.Cat;
 import com.example.try_shoot_deffen.model.Bullets;
 

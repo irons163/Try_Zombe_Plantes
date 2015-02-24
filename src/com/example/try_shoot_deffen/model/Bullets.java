@@ -703,7 +703,8 @@ public void checkIfInBattleRangeThenAttack(
 		boolean isInBattleRange = isInBattleRange(battleableSprite);
 		if(isInBattleRange){
 			attack(battleableSprite);
-		}
+			break;
+		}	
 	}
 }
 
