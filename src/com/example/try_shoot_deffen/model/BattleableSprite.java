@@ -21,38 +21,38 @@ public class BattleableSprite extends Sprite implements Battleable{
 		attributeInfo.setHp(20);
 	}
 
-	protected boolean isInBattleRange(BattleableSprite battleableSprite) {
-		// TODO Auto-generated method stub
-		boolean isInBattleRange;
-		if(weapenSprite!=null)
-			isInBattleRange = weapenSprite.isInBattleRange(battleableSprite);
-		else
-			isInBattleRange = collisionRectF.contains(battleableSprite.collisionRectF);
-		
-		return isInBattleRange;
-	}
-
-	protected void attack(BattleableSprite battleable) {
-		// TODO Auto-generated method stub
-		
-		AttributeInfo attributeInfoNew;
-		if(weapenSprite!=null){
-//			attributeInfoNew = weapenSprite.getNewAttributeInfo(attributeInfo);
-			weapenSprite.attack(battleable);
-		}else{
-			attributeInfoNew = attributeInfo;
-		
-			AttributeInfo attributeInfoBeAttacked = battleable.getAttributeInfo();
-			
-			int hurt = attributeInfoNew.getAtk() - attributeInfoBeAttacked.getDef();
-			attributeInfoBeAttacked.setHp(attributeInfoBeAttacked.getHp() - hurt);
-		}
-		
+//	protected boolean isInBattleRange(BattleableSprite battleableSprite) {
+//		// TODO Auto-generated method stub
+//		boolean isInBattleRange;
 //		if(weapenSprite!=null)
-//			battleable.beAttacked(weapenSprite);
+//			isInBattleRange = weapenSprite.isInBattleRange(battleableSprite);
 //		else
-//			battleable.beAttacked(null);
-	}
+//			isInBattleRange = collisionRectF.contains(battleableSprite.collisionRectF);
+//		
+//		return isInBattleRange;
+//	}
+//
+//	protected void attack(BattleableSprite battleable) {
+//		// TODO Auto-generated method stub
+//		
+//		AttributeInfo attributeInfoNew;
+//		if(weapenSprite!=null){
+////			attributeInfoNew = weapenSprite.getNewAttributeInfo(attributeInfo);
+//			weapenSprite.attack(battleable);
+//		}else{
+//			attributeInfoNew = attributeInfo;
+//		
+//			AttributeInfo attributeInfoBeAttacked = battleable.getAttributeInfo();
+//			
+//			int hurt = attributeInfoNew.getAtk() - attributeInfoBeAttacked.getDef();
+//			attributeInfoBeAttacked.setHp(attributeInfoBeAttacked.getHp() - hurt);
+//		}
+//		
+////		if(weapenSprite!=null)
+////			battleable.beAttacked(weapenSprite);
+////		else
+////			battleable.beAttacked(null);
+//	}
 	
 	@Override
 	public void checkIfInBattleRangeThenAttack(

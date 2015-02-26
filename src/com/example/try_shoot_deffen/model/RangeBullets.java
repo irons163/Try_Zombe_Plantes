@@ -25,7 +25,8 @@ public class RangeBullets extends Bullets{
 			}	
 		}
 		
-		checkIfInAreaOfEffectRangeThenAttackByAOE(battleables);
+		if(isInBattleRange)
+			checkIfInAreaOfEffectRangeThenAttackByAOE(battleables);
 	}
 	
 	private void checkIfInAreaOfEffectRangeThenAttackByAOE(List<BattleableSprite> battleables){

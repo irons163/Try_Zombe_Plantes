@@ -9,6 +9,8 @@ public class BulletsBuilder {
 	
 	public static Bullets createFrozenBullets(Context context, float x, float y){
 		Bullets bullet = new Bullets(context, x, y, false, 0);
+//		bullet.setX(bullet.getX() - bullet.w/2);
+		bullet.setPosition(bullet.getX(), bullet.getY());
 		bullet.setMoveRage(0, 0, CommonUtil.screenHeight,
 				CommonUtil.screenWidth);
 		bullet.setType(0);

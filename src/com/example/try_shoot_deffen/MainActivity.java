@@ -10,6 +10,7 @@ import com.example.try_gameengine.scene.SceneManager;
 import com.example.try_gameengine.stage.Stage;
 import com.example.try_shoot_deffen.utils.AudioUtil;
 import com.example.try_shoot_deffen.utils.BitmapUtil;
+import com.example.try_shoot_deffen.utils.ColorFilterBuilder;
 import com.example.try_shoot_deffen.utils.CommonUtil;
 
 public class MainActivity extends Stage {
@@ -32,6 +33,8 @@ public class MainActivity extends Stage {
 		CommonUtil.screenHeight -= CommonUtil.statusBarHeight;
 
 		BitmapUtil.initBitmap(this);
+		
+		ColorFilterBuilder.init();
 
 		initStage();
 	}

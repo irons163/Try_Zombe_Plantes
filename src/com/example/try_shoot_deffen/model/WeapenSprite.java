@@ -14,6 +14,7 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 	protected IEffect effect;
 	protected float atkR = 50;
 	protected AttributeInfo attributeInfo;
+	public static final float NO_ATK_RANGE = 0;
 	
 	public WeapenSprite(float x, float y, boolean autoAdd) {
 		super(x, y, autoAdd);
@@ -44,6 +45,9 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 
 	protected boolean isInBattleRange(BattleableSprite battleable) {
 		// TODO Auto-generated method stub
+		if(!isHasATKRange()){			
+			return noATKRangeListener.isInNoATKBattleRange(battleable);
+		}
 		double distance = Math.pow(getCenterX() - battleable.getCenterX(), 2) + Math.pow(getCenterY() - battleable.getCenterY(), 2);
 		distance = Math.sqrt(distance);
 		Log.e("distance", distance+"");
@@ -89,4 +93,35 @@ public class WeapenSprite extends Sprite implements IWeapen, Battleable{
 		// TODO Auto-generated method stub
 		
 	}	
+
+	public boolean isHasATKRange(){
+		if(atkR==NO_ATK_RANGE)
+			return false;
+		return true;
+	}
+	
+	interface NoATKRangeListener{
+		boolean isInNoATKBattleRange(BattleableSprite battleableSprite);
+		void attack(BattleableSprite battleableSprite);
+	}
+	
+	NoATKRangeListener noATKRangeListener = new NoATKRangeListener() {
+		
+		@Override
+		public boolean isInNoATKBattleRange(BattleableSprite battleableSprite) {
+			// TODO Auto-generated method stub
+			new RuntimeException();
+			return false;
+		}
+
+		@Override
+		public void attack(BattleableSprite battleableSprite) {
+			// TODO Auto-generated method stub
+			new RuntimeException();
+		}
+	};
+	
+	public void setNoATKRangeListener(NoATKRangeListener noATKRangeListener){
+		this.noATKRangeListener = noATKRangeListener;
+	}
 }

@@ -104,6 +104,19 @@ public class Defener extends BattleableSprite{
 		});
 		
 		setAction(SheepMove.Shoot.getName());
+		
+		initCollisiontRectF();
+	}
+	
+	private void initCollisiontRectF(){
+		setCollisionRectFEnable(true);
+		float collisionWidth = w;
+		float collisionHitght = h;
+		float collisionOffsetX = w/2-collisionWidth/2;
+		float collisionOffsetY = h/2-collisionHitght/2;
+		setCollisionOffsetXY(collisionOffsetX, collisionOffsetY);
+		setCollisionRectFWH(collisionWidth, collisionHitght);
+		setCollisionRectF(getX()+collisionOffsetX, getY()+collisionOffsetY, getX()+collisionOffsetX+collisionWidth, getY()+collisionOffsetY+collisionHitght);
 	}
 	
 	private void initAttribute(){

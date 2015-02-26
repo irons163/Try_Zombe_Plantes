@@ -1,23 +1,23 @@
 package com.example.try_shoot_deffen.model;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.example.try_shoot_deffen.model.Bullets.BulletsEventListener;
-import com.example.try_shoot_deffen.utils.Attribute;
-import com.example.try_shoot_deffen.utils.AttributeHelper;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class ShooterWeapen extends WeapenSprite{
-	protected List<Bullets> bulletsList = new CopyOnWriteArrayList<Bullets>();
+import com.example.try_shoot_deffen.effect.IEffect;
+import com.example.try_shoot_deffen.model.ShooterWeapen.ShooterEventListener;
+import com.example.try_shoot_deffen.utils.Attribute;
+import com.example.try_shoot_deffen.utils.AttributeHelper;
+
+public class MeleeWeapon extends WeapenSprite{
+
 	private Context context;
 	
-	public ShooterWeapen(Context context, float x, float y, boolean autoAdd) {
+	public MeleeWeapon(Context context, float x, float y, boolean autoAdd) {
 		super(x, y, autoAdd);
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -62,18 +62,22 @@ public class ShooterWeapen extends WeapenSprite{
 		
 		lastShootTime = currentTime;
 		
-		final Bullets bullets = BulletsBuilder.createFrozenBullets(context, getX(), getY());
-		bullets.setBulletsEventListener(new Bullets.BulletsEventListener() {
-			
-			@Override
-			public void willAttack(BattleableSprite battleableSprite) {
-				// TODO Auto-generated method stub
-				shooterEventListener.willAttack(battleableSprite);
-				
-				bulletsList.remove(bullets);
-			}
-		});
-		bulletsList.add(bullets);
+		IEffect effect = getWeapenEffect();
+		if(getWeapenEffect()!=null)
+			effect.doEffect(this, battleable);
+		
+//		final Bullets bullets = BulletsBuilder.createFrozenBullets(context, getX(), getY());
+//		bullets.setBulletsEventListener(new Bullets.BulletsEventListener() {
+//			
+//			@Override
+//			public void willAttack(BattleableSprite battleableSprite) {
+//				// TODO Auto-generated method stub
+//				shooterEventListener.willAttack(battleableSprite);
+//				
+//				bulletsList.remove(bullets);
+//			}
+//		});
+//		bulletsList.add(bullets);
 	}
 	
 	@Override
@@ -84,11 +88,8 @@ public class ShooterWeapen extends WeapenSprite{
 			boolean isInBattleRange = isInBattleRange(battleableSprite);
 			if(isInBattleRange){
 				attack(battleableSprite);
+				break;
 			}
-		}
-		
-		for(Bullets bullets : bulletsList){
-			bullets.checkIfInBattleRangeThenAttack(battleables);
 		}
 	}
 	
@@ -98,7 +99,7 @@ public class ShooterWeapen extends WeapenSprite{
 	
 	private void initAttribute() {
 		attribute = new Attribute();
-		float interval = new BigDecimal(3.0f / 1.0f).setScale(1,
+		float interval = new BigDecimal(2.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
 		attribute.setInterval(interval);
 		attributeHelper = new AttributeHelper(attribute);
@@ -109,9 +110,6 @@ public class ShooterWeapen extends WeapenSprite{
 		// TODO Auto-generated method stub
 		super.frameTrig();
 		
-		for(Bullets bullets : bulletsList){
-			bullets.frameTrig();
-		}
 	}
 	
 	@Override
@@ -119,8 +117,6 @@ public class ShooterWeapen extends WeapenSprite{
 		// TODO Auto-generated method stub
 //		super.drawSelf(canvas, paint);
 		
-		for(Bullets bullets : bulletsList){
-			bullets.drawSelf(canvas, paint);
-		}
 	}
+
 }

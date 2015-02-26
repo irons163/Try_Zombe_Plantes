@@ -6,7 +6,8 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 
 import com.example.try_gameengine.action.MovementAction;
@@ -14,11 +15,12 @@ import com.example.try_gameengine.action.MovementActionInfo;
 import com.example.try_gameengine.action.MovementActionItemBaseReugularFPS;
 import com.example.try_gameengine.action.MovementActionSetWithThreadPool;
 import com.example.try_gameengine.framework.IActionListener;
-import com.example.try_gameengine.framework.Sprite;
 import com.example.try_shoot_deffen.utils.Attribute;
 import com.example.try_shoot_deffen.utils.AttributeHelper;
 import com.example.try_shoot_deffen.utils.BattleUtil;
 import com.example.try_shoot_deffen.utils.BitmapUtil;
+import com.example.try_shoot_deffen.utils.ColorFilterBuilder;
+import com.example.try_shoot_deffen.utils.ColorFilterGenerator;
 
 public class Zombe extends BattleableSprite{
 	Attribute attribute;
@@ -86,8 +88,8 @@ public class Zombe extends BattleableSprite{
 		
 		setBitmapAndFrameWH(BitmapUtil.hamster, BitmapUtil.hamster.getWidth()/7, BitmapUtil.hamster.getHeight()/2);
 		
-		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{0,10,0,1}, BattleUtil.changeToNew(new int[]{0,5,5,5}, getSpeed()), true, new IActionListener() {
-			
+//		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{0,10,0,1}, BattleUtil.changeToNew(new int[]{0,5,5,5}, getSpeed()), true, new IActionListener() {
+		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{11,12,13,11}, new int[]{4,4,4,4}, true, new IActionListener() {
 			@Override
 			public void beforeChangeFrame(int nextFrameId) {
 				// TODO Auto-generated method stub
@@ -139,6 +141,19 @@ public class Zombe extends BattleableSprite{
 		movementActionShoot.start();
 		
 		setMovementAction(movementActionShoot);
+		
+		initCollisiontRectF();
+	}
+	
+	private void initCollisiontRectF(){
+		setCollisionRectFEnable(true);
+		float collisionWidth = w;
+		float collisionHitght = h;
+		float collisionOffsetX = w/2-collisionWidth/2;
+		float collisionOffsetY = h/2-collisionHitght/2;
+		setCollisionOffsetXY(collisionOffsetX, collisionOffsetY);
+		setCollisionRectFWH(collisionWidth, collisionHitght);
+		setCollisionRectF(getX()+collisionOffsetX, getY()+collisionOffsetY, getX()+collisionOffsetX+collisionWidth, getY()+collisionOffsetY+collisionHitght);
 	}
 	
 	private void initAttribute(){
@@ -225,14 +240,95 @@ public class Zombe extends BattleableSprite{
 		if(battleSpriteInjureType == BattleSpriteInjureType.Frozen){
 			if(paint==null)
 				paint = new Paint();
-			paint.setColor(Color.RED);
-			paint.setAlpha(150);
+//			paint.setColor(Color.RED);
+//			paint.setAlpha(150);
+			
+//			ImageView Sun = (ImageView)findViewById(R.id.sun);
+//			Sun.setColorFilter();
+			
+			float[] matrix = { 
+			        1, 1, 1, 1, 1, //red
+			        0, 0, 0, 0, 0, //green
+			        0, 0, 0, 0, 0, //blue
+			        1, 1, 1, 1, 1 //alpha
+			    };
+			
+//			ColorMatrix colorMatrix = new ColorMatrix(matrix);
+//			
+//			ColorFilterGenerator.adjustHue(colorMatrix, 162);
+//			
+//			ColorMatrixColorFilter colorMatrixColorFilter = new ColorMatrixColorFilter(colorMatrix);
+//			
+//			paint.setColorFilter(colorMatrixColorFilter);
+			
+//			paint.setColorFilter(ColorFilterGenerator.adjustHue(162));
+			
+//			ColorMatrix cm = new ColorMatrix();
+//			
+//			ColorFilterGenerator.adjustHue(cm, -50);
+//			
+//			ColorFilterGenerator.adjustBrightness(cm, -30);
+//			
+//			ColorMatrixColorFilter colorMatrixColorFilter = new ColorMatrixColorFilter(cm);
+//			
+//			paint.setColorFilter(colorMatrixColorFilter);
+			
+			paint.setColorFilter(ColorFilterBuilder.getEffectColor(battleSpriteInjureType));
+			
+			// all pix change to red
+//			ColorMatrixColorFilter c = new ColorMatrixColorFilter(matrix);
+//			paint.setColorFilter(c);
+			
+		}else if(battleSpriteInjureType == BattleSpriteInjureType.Fire){
+			float frameWidth = BitmapUtil.invincibel.getWidth()/4.0f;
+			float frameHeight = BitmapUtil.invincibel.getHeight();
+			canvas.save();
+			float newX = getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f;
+			float newY = getY() + h - BitmapUtil.invincibel.getHeight();
+			canvas.clipRect(getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h - BitmapUtil.invincibel.getHeight(), getX() + w + (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h);
+			
+			canvas.drawBitmap(BitmapUtil.invincibel, newX-(newcurrentFrame%(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameWidth, 
+					newY - (newcurrentFrame/(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameHeight, paint);
+			canvas.restore();
+			
+			if (alpha > 0) {
+				alpha -= 50;
+				if (alpha <= 0){
+					alpha = 0;	
+					newcurrentFrame++;
+					if(newcurrentFrame >= 4)
+						newcurrentFrame=0;
+				}
+			}else{
+				alpha = 255;
+//				paint.setAlpha(alpha);
+			}
+					
+			invincibling();
+			
+			if(paint==null)
+				paint = new Paint();
+			paint.setColorFilter(ColorFilterBuilder.getEffectColor(battleSpriteInjureType));
 		}
 			
 		super.drawSelf(canvas, paint);
 		
 		if(weapen!=null)
 			weapen.drawSelf(canvas, paint);
+	}
+	
+	int HAMSTER_INVINCIBLE_TIME = 200;
+	int hamsterInvincibleCounter;
+	int alpha = 255;
+	int newcurrentFrame;
+	
+	private void invincibling(){
+		hamsterInvincibleCounter++;
+		if(HAMSTER_INVINCIBLE_TIME <= hamsterInvincibleCounter){
+			isInvincible = false;
+			hamsterInvincibleCounter = 0;
+			alpha = 255;
+		}
 	}
 	
 	private void injuring(){
@@ -286,5 +382,9 @@ public class Zombe extends BattleableSprite{
 			int newDelay = BattleUtil.changeToNew((int)info.getDelay(), getSpeed());
 			info.setDelay(newDelay);
 		}
+	}
+	
+	public void destory(){
+//		movementAction.controller.cancelAllMove();
 	}
 }

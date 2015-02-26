@@ -325,7 +325,8 @@ public static Bitmap bar;
 		
 		invincibel = BitmapFactory.decodeResource(context.getResources(), R.drawable.invincible);
 		float invincibelPersentByScreen = 4.5f;
-		invincibel = createBitmap(invincibel, CommonUtil.screenWidth/invincibelPersentByScreen*4/invincibel.getWidth());
+//		invincibel = createBitmap(invincibel, CommonUtil.screenWidth/invincibelPersentByScreen*4/invincibel.getWidth());
+		invincibel = createBitmap(invincibel, CommonUtil.screenHeight/invincibelPersentByScreen/invincibel.getHeight());
 	}
 	
 	public static void resizeToolBmp(){

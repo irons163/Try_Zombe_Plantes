@@ -2,6 +2,7 @@ package com.example.try_shoot_deffen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +18,7 @@ import com.example.try_shoot_deffen.model.MapTileObject;
 import com.example.try_shoot_deffen.model.Bullets;
 import com.example.try_shoot_deffen.model.Defener;
 import com.example.try_shoot_deffen.model.Zombe;
+import com.example.try_shoot_deffen.model.ZombeBuilder;
 import com.example.try_shoot_deffen.utils.BattleUtil;
 import com.example.try_shoot_deffen.utils.CommonUtil;
 import com.example.try_shoot_deffen.utils.MapTileUtil;
@@ -57,7 +59,9 @@ public class MyGameModel extends GameModel{
 	
 	private Zombe zombe;
 	
-	private List<BattleableSprite> zombes = new ArrayList<BattleableSprite>();
+	private List<BattleableSprite> zombes = new CopyOnWriteArrayList<BattleableSprite>();
+	
+	private ZombeBuilder zombeBuilder;
 	
 	public MyGameModel(Context context, Data data) {
 		super(context, data);
@@ -76,6 +80,8 @@ public class MyGameModel extends GameModel{
 		zombe = new Zombe(800, 100, false);
 		zombe.setPosition(1000, 500);
 		zombes.add(zombe);
+		
+		zombeBuilder = new ZombeBuilder();
 	}
 	
 	@Override
@@ -135,7 +141,10 @@ public class MyGameModel extends GameModel{
 		MapTileObject mapTileObject = mapTileUtil.checkTouchXY(x, y);
 		if(mapTileObject != null){
 //			mapTileObject.setSprite(new Defener(mapTileObject.getX(), mapTileObject.getY(), false));
-			mapTileObject.setSprite(DefenerBuilder.createHamster1(context, mapTileObject.getX(), mapTileObject.getY()));
+//			mapTileObject.setSprite(DefenerBuilder.createHamster1(context, mapTileObject.getX(), mapTileObject.getY()));
+			Defener defener = DefenerBuilder.createBySelect(context, mapTileObject.getX(), mapTileObject.getY());
+			if(defener!=null)
+					mapTileObject.setSprite(defener);
 		}
 		
 		super.onTouchEvent(event);
@@ -152,7 +161,17 @@ public class MyGameModel extends GameModel{
 		
 //		bullets.frameTrig();
 		
-		zombe.frameTrig();
+		Zombe zombeNew = zombeBuilder.createZombe();
+		
+		if(zombeNew!=null){
+			zombes.add(zombeNew);
+		}
+		
+//		zombe.frameTrig();
+		
+		for(BattleableSprite zombe : zombes){
+			zombe.frameTrig();
+		}
 		
 		mapTileUtil.frameTrig();
 		
@@ -161,6 +180,12 @@ public class MyGameModel extends GameModel{
 //		BattleUtil.checkBattle(battleableSpriteDefeners, battleableSpriteMonsters);
 		
 		checkMapDefenerInBattle();
+		
+		for(BattleableSprite zombe : zombes){
+			if(zombe.getX() < 0 ){
+				zombes.remove(zombe);
+			}
+		}
 		
 //		monsters.add(new Monster(context, x, y, autoAdd, type_direction);
 	}
@@ -174,9 +199,13 @@ public class MyGameModel extends GameModel{
 		
 //		bullets.drawSelf(canvas, null);
 		
-		zombe.drawSelf(canvas, null);
+//		zombe.drawSelf(canvas, null);		
 		
 		mapTileUtil.drawSelf(canvas, null);
+		
+		for(BattleableSprite zombe : zombes){
+			zombe.drawSelf(canvas, null);
+		}
 	}
 	
 	public int getBallLevel() {
