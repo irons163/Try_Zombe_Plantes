@@ -1,6 +1,5 @@
 package com.example.try_shoot_deffen;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,16 +10,16 @@ import android.view.MotionEvent;
 
 import com.example.try_gameengine.framework.Data;
 import com.example.try_gameengine.framework.GameModel;
+import com.example.try_gameengine.framework.LayerManager;
 import com.example.try_shoot_deffen.model.BattleableSprite;
 import com.example.try_shoot_deffen.model.Cat;
+import com.example.try_shoot_deffen.model.Defener;
 import com.example.try_shoot_deffen.model.DefenerBuilder;
 import com.example.try_shoot_deffen.model.MapTileObject;
-import com.example.try_shoot_deffen.model.Bullets;
-import com.example.try_shoot_deffen.model.Defener;
+import com.example.try_shoot_deffen.model.Warrior;
 import com.example.try_shoot_deffen.model.Zombe;
 import com.example.try_shoot_deffen.model.ZombeBuilder;
-import com.example.try_shoot_deffen.utils.BattleUtil;
-import com.example.try_shoot_deffen.utils.CommonUtil;
+import com.example.try_shoot_deffen.summerzie.Summerize;
 import com.example.try_shoot_deffen.utils.MapTileUtil;
 
 public class MyGameModel extends GameModel{
@@ -60,8 +59,13 @@ public class MyGameModel extends GameModel{
 	private Zombe zombe;
 	
 	private List<BattleableSprite> zombes = new CopyOnWriteArrayList<BattleableSprite>();
+	private List<BattleableSprite> fighters = new CopyOnWriteArrayList<BattleableSprite>();
 	
 	private ZombeBuilder zombeBuilder;
+	
+	BattleableSprite warrior;
+	
+	BattleableSprite medic;
 	
 	public MyGameModel(Context context, Data data) {
 		super(context, data);
@@ -82,6 +86,13 @@ public class MyGameModel extends GameModel{
 		zombes.add(zombe);
 		
 		zombeBuilder = new ZombeBuilder();
+		
+		warrior = (BattleableSprite) Summerize.summerize2(context, 500, 500, 0);
+		
+		medic = (BattleableSprite) Summerize.summerize3(context, 200, 500, 0);
+		
+		fighters.add(warrior);
+		fighters.add(medic);
 	}
 	
 	@Override
@@ -142,7 +153,7 @@ public class MyGameModel extends GameModel{
 		if(mapTileObject != null){
 //			mapTileObject.setSprite(new Defener(mapTileObject.getX(), mapTileObject.getY(), false));
 //			mapTileObject.setSprite(DefenerBuilder.createHamster1(context, mapTileObject.getX(), mapTileObject.getY()));
-			Defener defener = DefenerBuilder.createBySelect(context, mapTileObject.getX(), mapTileObject.getY());
+			BattleableSprite defener = DefenerBuilder.createBySelect(context, mapTileObject.getX(), mapTileObject.getY());
 			if(defener!=null)
 					mapTileObject.setSprite(defener);
 		}
@@ -173,17 +184,27 @@ public class MyGameModel extends GameModel{
 			zombe.frameTrig();
 		}
 		
+		warrior.frameTrig();
+		
+		medic.frameTrig();
+		
 		mapTileUtil.frameTrig();
 		
 //		BattleUtil.checkBattle(player, zombe);
 		
 //		BattleUtil.checkBattle(battleableSpriteDefeners, battleableSpriteMonsters);
 		
+		warrior.checkIfInBattleRangeThenAttack(zombes);
+		
+		medic.checkIfInBattleRangeThenAttack(fighters, zombes);
+		
 		checkMapDefenerInBattle();
 		
 		for(BattleableSprite zombe : zombes){
-			if(zombe.getX() < 0 ){
+			if(zombe.getX() < 0 || zombe.isNeedRemove()){
 				zombes.remove(zombe);
+				
+				zombe.setIsBattleable(false);
 			}
 		}
 		
@@ -203,9 +224,15 @@ public class MyGameModel extends GameModel{
 		
 		mapTileUtil.drawSelf(canvas, null);
 		
+		LayerManager.getInstance().drawLayers(canvas, null);
+		
 		for(BattleableSprite zombe : zombes){
 			zombe.drawSelf(canvas, null);
 		}
+		
+		warrior.drawSelf(canvas, null);
+		
+		medic.drawSelf(canvas, null);
 	}
 	
 	public int getBallLevel() {

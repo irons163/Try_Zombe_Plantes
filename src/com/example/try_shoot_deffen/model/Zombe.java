@@ -6,21 +6,23 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
+import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.example.try_gameengine.action.MovementAction;
 import com.example.try_gameengine.action.MovementActionInfo;
 import com.example.try_gameengine.action.MovementActionItemBaseReugularFPS;
 import com.example.try_gameengine.action.MovementActionSetWithThreadPool;
+import com.example.try_gameengine.action.MovementAtionController;
 import com.example.try_gameengine.framework.IActionListener;
 import com.example.try_shoot_deffen.utils.Attribute;
 import com.example.try_shoot_deffen.utils.AttributeHelper;
 import com.example.try_shoot_deffen.utils.BattleUtil;
 import com.example.try_shoot_deffen.utils.BitmapUtil;
 import com.example.try_shoot_deffen.utils.ColorFilterBuilder;
-import com.example.try_shoot_deffen.utils.ColorFilterGenerator;
 
 public class Zombe extends BattleableSprite{
 	Attribute attribute;
@@ -86,6 +88,8 @@ public class Zombe extends BattleableSprite{
 		// TODO Auto-generated constructor stub
 //		setBitmapAndFrameWH(bitmap, frameWidth, frameHeight);
 		
+		battleableSpriteType = BattleableSpriteType.Enemy;
+		
 		setBitmapAndFrameWH(BitmapUtil.hamster, BitmapUtil.hamster.getWidth()/7, BitmapUtil.hamster.getHeight()/2);
 		
 //		addActionFPSFrame(SheepMove.Shoot.getName(), new int[]{0,10,0,1}, BattleUtil.changeToNew(new int[]{0,5,5,5}, getSpeed()), true, new IActionListener() {
@@ -110,11 +114,14 @@ public class Zombe extends BattleableSprite{
 			}
 		});
 		
+		addActionFPS(SheepMove.Injure.getName(), SheepMove.Injure.getBitmaps(), new int[]{0}, false);
+		
 		setAction(SheepMove.Shoot.getName());
 		
 		MovementAction movementActionShoot;
 		movementActionShoot = new MovementActionSetWithThreadPool();
-		MovementActionInfo info = new MovementActionInfo(2000, BattleUtil.changeToNew(1, getSpeed()), -2, 0, "", null, false);
+		movementActionShoot.setMovementActionController(new MovementAtionController());
+		MovementActionInfo info = new MovementActionInfo(3000, BattleUtil.changeToNew(1, getSpeed()), -2, 0, "", null, false);
 		MovementActionItemBaseReugularFPS reFlectaction = new MovementActionItemBaseReugularFPS(info);
 		movementActionShoot.addMovementAction(reFlectaction);
 		
@@ -215,6 +222,21 @@ public class Zombe extends BattleableSprite{
 		if(weapen!=null)
 			weapen.frameTrig();
 		
+		if(getAttributeInfo().getHp() <= 0 && !isInjuring()){
+//			isInjure = true;
+			beHit();
+		}
+		
+		if(isInjuring()){
+			getAttributeInfo().removeAllFromEffectStatusList();
+			action.controller.cancelAllMove();
+			Log.e("zoobe", "die");
+		}else {
+			getAttributeInfo().checkAllEffect(this);
+		}
+		
+		injuring();
+		
 //		if(isPrepareToShoot){
 //			this.shoot();
 //			isPrepareToShoot = false;
@@ -237,7 +259,44 @@ public class Zombe extends BattleableSprite{
 	@Override
 	public void drawSelf(Canvas canvas, Paint paint) {
 		// TODO Auto-generated method stub
-		if(battleSpriteInjureType == BattleSpriteInjureType.Frozen){
+//		if(battleSpriteInjureType == BattleSpriteInjureType.Frozen){
+		
+		if(getAttributeInfo().checkHasEffectOrNotByEffectType(BattleSpriteInjureType.Fire)){
+			
+			float frameWidth = BitmapUtil.invincibel.getWidth()/4.0f;
+			float frameHeight = BitmapUtil.invincibel.getHeight();
+			canvas.save();
+			float newX = getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f;
+			float newY = getY() + h - BitmapUtil.invincibel.getHeight();
+			canvas.clipRect(getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h - BitmapUtil.invincibel.getHeight(), getX() + w + (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h);
+			
+			canvas.drawBitmap(BitmapUtil.invincibel, newX-(newcurrentFrame%(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameWidth, 
+					newY - (newcurrentFrame/(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameHeight, paint);
+			canvas.restore();
+			
+			if (alpha > 0) {
+				alpha -= 50;
+				if (alpha <= 0){
+					alpha = 0;	
+					newcurrentFrame++;
+					if(newcurrentFrame >= 4)
+						newcurrentFrame=0;
+				}
+			}else{
+				alpha = 255;
+//				paint.setAlpha(alpha);
+			}
+					
+			invincibling();
+			
+			if(paint==null)
+				paint = new Paint();
+			paint.setColorFilter(ColorFilterBuilder.getEffectColor(battleSpriteInjureType));
+			
+			Log.e("zoobe", "draw fire");
+		}
+		
+		if(getAttributeInfo().checkHasEffectOrNotByEffectType(BattleSpriteInjureType.Frozen)){
 			if(paint==null)
 				paint = new Paint();
 //			paint.setColor(Color.RED);
@@ -279,36 +338,13 @@ public class Zombe extends BattleableSprite{
 //			ColorMatrixColorFilter c = new ColorMatrixColorFilter(matrix);
 //			paint.setColorFilter(c);
 			
-		}else if(battleSpriteInjureType == BattleSpriteInjureType.Fire){
-			float frameWidth = BitmapUtil.invincibel.getWidth()/4.0f;
-			float frameHeight = BitmapUtil.invincibel.getHeight();
-			canvas.save();
-			float newX = getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f;
-			float newY = getY() + h - BitmapUtil.invincibel.getHeight();
-			canvas.clipRect(getX() - (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h - BitmapUtil.invincibel.getHeight(), getX() + w + (BitmapUtil.invincibel.getWidth()/4.0f - w)/2.0f, getY() + h);
-			
-			canvas.drawBitmap(BitmapUtil.invincibel, newX-(newcurrentFrame%(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameWidth, 
-					newY - (newcurrentFrame/(BitmapUtil.invincibel.getWidth()/(int)frameWidth))*frameHeight, paint);
-			canvas.restore();
-			
-			if (alpha > 0) {
-				alpha -= 50;
-				if (alpha <= 0){
-					alpha = 0;	
-					newcurrentFrame++;
-					if(newcurrentFrame >= 4)
-						newcurrentFrame=0;
-				}
-			}else{
-				alpha = 255;
-//				paint.setAlpha(alpha);
-			}
-					
-			invincibling();
-			
+		}	
+		
+		if(getAttributeInfo().checkHasEffectOrNotByEffectType(BattleSpriteInjureType.Normal)){
 			if(paint==null)
 				paint = new Paint();
-			paint.setColorFilter(ColorFilterBuilder.getEffectColor(battleSpriteInjureType));
+			
+			paint.setColorFilter(ColorFilterBuilder.getEffectColor(BattleSpriteInjureType.Normal));
 		}
 			
 		super.drawSelf(canvas, paint);
@@ -336,10 +372,11 @@ public class Zombe extends BattleableSprite{
 			return;
 		hamsterInjureCounter++;
 		if(HAMSTER_INJURE_TIME <= hamsterInjureCounter){
-			isInjure = false;
+//			isInjure = false;
 			isInvincible = true;
 			hamsterInjureCounter = 0;
 			bitmap = BitmapUtil.hamster;
+			isNeedRemove = true;
 		}
 	}
 	
@@ -378,10 +415,52 @@ public class Zombe extends BattleableSprite{
 	
 	public void setNew(){
 		actions.get(SheepMove.Shoot.getName()).frameTime = BattleUtil.changeToNew(actions.get(SheepMove.Shoot.getName()).frameTime, getSpeed());
+		actions.get(SheepMove.Shoot.getName()).initUpdateTime();
 		for(MovementActionInfo info : getMovementAction().getMovementInfoList()){
 			int newDelay = BattleUtil.changeToNew((int)info.getDelay(), getSpeed());
+			Log.e("newDelay", "newDelay:"+newDelay);
 			info.setDelay(newDelay);
 		}
+		battleInviable = 1.0f;
+	}
+	
+	public void beHit(){
+		synchronized (this) {
+			setAction(SheepMove.Injure.getName());
+//			bitmap = BitmapUtil.hp;
+			isInjure = true;
+		}
+	}
+	
+	@Override
+	public boolean checkIfInBattleRangeThenAttack(
+			List<BattleableSprite> battleables) {
+		// TODO Auto-generated method stub
+
+		if(isInjuring()){
+			Log.e("zombe", "no battle");
+			return false;
+		}
+		
+		if(weapenSprite!=null)
+			return weapenSprite.checkIfInBattleRangeThenAttack(battleables);
+		else
+		for(BattleableSprite battleableSprite : battleables){
+//			boolean isInBattleRange = isInBattleRange(battleableSprite);
+//			if(isInBattleRange){
+//				attack(battleableSprite);
+//			}
+			
+			
+				collisionRectF.contains(battleableSprite.getCollisionRectF());
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isBattleable() {
+		// TODO Auto-generated method stub
+		return !isInjuring() && isBattleable;
 	}
 	
 	public void destory(){

@@ -13,15 +13,18 @@ import com.example.try_shoot_deffen.model.ShooterWeapen.ShooterEventListener;
 import com.example.try_shoot_deffen.utils.Attribute;
 import com.example.try_shoot_deffen.utils.AttributeHelper;
 
-public class RangeMeleeWeapon extends WeapenSprite{
+public class RangeMeleeWeapon extends MeleeWeapon{
 
 	private Context context;
 	
 	public RangeMeleeWeapon(Context context, float x, float y, boolean autoAdd) {
-		super(x, y, autoAdd);
+		super(context, x, y, autoAdd);
 		// TODO Auto-generated constructor stub
-		this.context = context;
-		initAttribute();
+	}
+	
+	public RangeMeleeWeapon(Context context, float x, float y, boolean autoAdd, float interval) {
+		super(context, x, y, autoAdd, interval);
+		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -50,12 +53,6 @@ public class RangeMeleeWeapon extends WeapenSprite{
 
 	@Override
 	public void attack(BattleableSprite battleable) {
-		// TODO Auto-generated method stub
-//		for(Bullets bullets : bulletsList){
-//			bullets.attack(battleable);
-//		}
-		
-
 		
 		IEffect effect = getWeapenEffect();
 		if(getWeapenEffect()!=null)
@@ -76,9 +73,17 @@ public class RangeMeleeWeapon extends WeapenSprite{
 	}
 	
 	@Override
-	public void checkIfInBattleRangeThenAttack(
+	public boolean checkIfInBattleRangeThenAttack(
 			List<BattleableSprite> battleables) {
 		// TODO Auto-generated method stub
+		
+		long currentTime = System.currentTimeMillis();
+		if (!attributeHelper.isCanShoot(lastShootTime, currentTime)) {
+			return false;
+		}
+		
+		lastShootTime = currentTime;
+		
 		boolean isInBattleRange = false;
 		for(BattleableSprite battleableSprite : battleables){
 			isInBattleRange = isInBattleRange(battleableSprite);
@@ -89,16 +94,11 @@ public class RangeMeleeWeapon extends WeapenSprite{
 		
 		if(isInBattleRange)
 			checkIfInAreaOfEffectRangeThenAttackByAOE(battleables);
+		
+		return isInBattleRange;
 	}
 	
 	private void checkIfInAreaOfEffectRangeThenAttackByAOE(List<BattleableSprite> battleables){
-		
-		long currentTime = System.currentTimeMillis();
-		if (!attributeHelper.isCanShoot(lastShootTime, currentTime)) {
-			return;
-		}
-		
-		lastShootTime = currentTime;
 		
 		for(BattleableSprite battleableSprite : battleables){
 			if(isInBattleRange(battleableSprite))
@@ -106,30 +106,17 @@ public class RangeMeleeWeapon extends WeapenSprite{
 		}
 	}
 	
-	Attribute attribute;
-	AttributeHelper attributeHelper;
-	long lastShootTime;
-	
-	private void initAttribute() {
+	@Override
+	protected void initAttribute() {
 		attribute = new Attribute();
-		float interval = new BigDecimal(2.0f / 1.0f).setScale(1,
+		
+		if(interval<=-1){
+			interval = new BigDecimal(2.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
+		}
+		
 		attribute.setInterval(interval);
 		attributeHelper = new AttributeHelper(attribute);
-	}
-	
-	@Override
-	public void frameTrig() {
-		// TODO Auto-generated method stub
-		super.frameTrig();
-		
-	}
-	
-	@Override
-	public void drawSelf(Canvas canvas, Paint paint) {
-		// TODO Auto-generated method stub
-//		super.drawSelf(canvas, paint);
-		
 	}
 
 }

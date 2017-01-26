@@ -5,6 +5,14 @@ import com.example.try_shoot_deffen.model.WeapenSprite;
 
 public interface IEffect {
 	
-	public void doEffect(WeapenSprite weapenSprite, BattleableSprite battleableSpriteBeAttacked);
+	interface EffectListener{
+		void didEffect(BattleableSprite battleableSpriteByEffecten);
+	}
 	
+	public void doEffect(WeapenSprite weapenSprite, BattleableSprite battleableSpriteBeAttacked);
+	public void checkEffect(BattleableSprite battleableSprite);
+	
+	public IEffect cloneEffect();
+	
+	public void setEffectListener(EffectListener effectListener);
 }

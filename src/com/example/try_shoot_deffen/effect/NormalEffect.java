@@ -7,7 +7,7 @@ import com.example.try_shoot_deffen.model.WeapenSprite;
 import com.example.try_shoot_deffen.model.BattleableSprite.BattleSpriteInjureType;
 import com.example.try_shoot_deffen.utils.IntervalTimer;
 
-public class FireEffect extends BaseEffect  {
+public class NormalEffect extends BaseEffect {
 	
 //	@Override
 //	public void doEffect(BattleableSprite battleableSpriteAttacker,
@@ -16,7 +16,7 @@ public class FireEffect extends BaseEffect  {
 //		
 //	}
 
-	public FireEffect(){
+	public NormalEffect(){
 		float interval = new BigDecimal(1.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
 		intervalTimer = new IntervalTimer(interval);
@@ -24,31 +24,9 @@ public class FireEffect extends BaseEffect  {
 	}
 	
 	private void init(){
-		battleSpriteInjureType = BattleSpriteInjureType.Fire;
-		effectTimes = 3;
+		battleSpriteInjureType = BattleSpriteInjureType.Normal;
+		effectTimes = 1;
 		currentEffectTimes = 0;
-		dmg = 5;
-	}
-	
-	@Override
-	public void doEffect(WeapenSprite weapenSprite,
-			BattleableSprite battleableSpriteBeAttacked) {
-		// TODO Auto-generated method stub
-		if(!battleableSpriteBeAttacked.getAttributeInfo().checkIsAlreadyHasTheSameEffect(this)){
-			battleableSpriteBeAttacked.getAttributeInfo().addToEffectStatusList(this);
-		}
-		battleableSpriteBeAttacked.injure(battleSpriteInjureType);
-	}
-	
-	public void checkEffect(BattleableSprite battleableSprite){
-		
-		if(intervalTimer.isCanShoot() && currentEffectTimes < effectTimes){
-//			battleableSprite.injure(battleSpriteInjureType);
-			battleableSprite.getAttributeInfo().setHp(battleableSprite.getAttributeInfo().getHp() - dmg);
-			currentEffectTimes++;
-		}else if (currentEffectTimes >= effectTimes){
-			battleableSprite.getAttributeInfo().removeFromEffectStatusList(this);
-		}
 	}
 	
 	public void cancelEffect(){
@@ -58,7 +36,18 @@ public class FireEffect extends BaseEffect  {
 	@Override
 	public IEffect cloneEffect() {
 		// TODO Auto-generated method stub
-		return new FireEffect();
+		final EffectListener effectListener2 = new EffectListener() {
+			
+			@Override
+			public void didEffect(BattleableSprite battleableSpriteByEffecten) {
+				// TODO Auto-generated method stub
+				effectListener.didEffect(battleableSpriteByEffecten);
+			}
+		};
+		
+		NormalEffect normalEffect = new NormalEffect();
+		normalEffect.setEffectListener(effectListener2);
+		return normalEffect;
 	}
 
 	@Override

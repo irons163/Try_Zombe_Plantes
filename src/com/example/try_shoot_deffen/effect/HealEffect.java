@@ -7,7 +7,7 @@ import com.example.try_shoot_deffen.model.WeapenSprite;
 import com.example.try_shoot_deffen.model.BattleableSprite.BattleSpriteInjureType;
 import com.example.try_shoot_deffen.utils.IntervalTimer;
 
-public class FireEffect extends BaseEffect  {
+public class HealEffect extends BaseEffect  {
 	
 //	@Override
 //	public void doEffect(BattleableSprite battleableSpriteAttacker,
@@ -16,7 +16,7 @@ public class FireEffect extends BaseEffect  {
 //		
 //	}
 
-	public FireEffect(){
+	public HealEffect(){
 		float interval = new BigDecimal(1.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
 		intervalTimer = new IntervalTimer(interval);
@@ -24,8 +24,8 @@ public class FireEffect extends BaseEffect  {
 	}
 	
 	private void init(){
-		battleSpriteInjureType = BattleSpriteInjureType.Fire;
-		effectTimes = 3;
+		battleSpriteInjureType = BattleSpriteInjureType.Heal;
+		effectTimes = 1;
 		currentEffectTimes = 0;
 		dmg = 5;
 	}
@@ -37,14 +37,14 @@ public class FireEffect extends BaseEffect  {
 		if(!battleableSpriteBeAttacked.getAttributeInfo().checkIsAlreadyHasTheSameEffect(this)){
 			battleableSpriteBeAttacked.getAttributeInfo().addToEffectStatusList(this);
 		}
-		battleableSpriteBeAttacked.injure(battleSpriteInjureType);
+//		battleableSpriteBeAttacked.injure(battleSpriteInjureType);
 	}
 	
 	public void checkEffect(BattleableSprite battleableSprite){
 		
 		if(intervalTimer.isCanShoot() && currentEffectTimes < effectTimes){
 //			battleableSprite.injure(battleSpriteInjureType);
-			battleableSprite.getAttributeInfo().setHp(battleableSprite.getAttributeInfo().getHp() - dmg);
+			battleableSprite.getAttributeInfo().setHp(battleableSprite.getAttributeInfo().getHp() + dmg);
 			currentEffectTimes++;
 		}else if (currentEffectTimes >= effectTimes){
 			battleableSprite.getAttributeInfo().removeFromEffectStatusList(this);
@@ -58,7 +58,7 @@ public class FireEffect extends BaseEffect  {
 	@Override
 	public IEffect cloneEffect() {
 		// TODO Auto-generated method stub
-		return new FireEffect();
+		return new HealEffect();
 	}
 
 	@Override

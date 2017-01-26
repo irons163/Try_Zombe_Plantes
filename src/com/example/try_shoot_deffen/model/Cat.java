@@ -21,7 +21,7 @@ import com.example.try_gameengine.action.MovementActionSetWithThreadPool;
 import com.example.try_gameengine.action.MovementAtionController;
 import com.example.try_gameengine.framework.IActionListener;
 import com.example.try_gameengine.framework.Sprite;
-import com.example.try_gameengine.script.Script;
+//import com.example.try_gameengine.script.Script;
 import com.example.try_gameengine.script.ScriptPaser;
 import com.example.try_shoot_deffen.MyGameModel;
 import com.example.try_shoot_deffen.utils.Attribute;
@@ -172,7 +172,7 @@ enum CatAction{
 	boolean isResum = true;
 
 	private void initMove(Context context) {
-		Script script = new Script();
+//		Script script = new Script();
 		final ScriptPaser scriptPaser = new ScriptPaser();
 		scriptPaser.paser(context, this, "111.txt");
 

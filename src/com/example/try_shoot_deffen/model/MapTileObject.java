@@ -32,8 +32,8 @@ public class MapTileObject extends Sprite{
 	public void drawSelf(Canvas canvas, Paint paint) {
 		// TODO Auto-generated method stub
 		super.drawSelf(canvas, paint);
-		if(battleableSprite!=null)
-		battleableSprite.drawSelf(canvas, paint);
+//		if(battleableSprite!=null)
+//		battleableSprite.drawSelf(canvas, paint);
 	}
 	
 	@Override

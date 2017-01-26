@@ -5,6 +5,8 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.try_gameengine.framework.Config;
+import com.example.try_gameengine.framework.Config.DestanceType;
 import com.example.try_gameengine.scene.Scene;
 import com.example.try_gameengine.scene.SceneManager;
 import com.example.try_gameengine.stage.Stage;
@@ -37,6 +39,13 @@ public class MainActivity extends Stage {
 		ColorFilterBuilder.init();
 
 		initStage();
+		
+		Config.enableFPSInterval = true;
+		Config.fps = 40;
+		Config.showFPS = false;
+		Config.destanceType = DestanceType.ScreenPersent;
+		Config.currentScreenWidth = CommonUtil.screenWidth;
+		Config.currentScreenHeight = CommonUtil.screenHeight;
 	}
 
 	@Override

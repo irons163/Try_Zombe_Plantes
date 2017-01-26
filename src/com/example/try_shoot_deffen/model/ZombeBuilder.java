@@ -19,7 +19,7 @@ public class ZombeBuilder {
 	
 	private void initAttribute() {
 		attribute = new Attribute();
-		float interval = new BigDecimal(1.0f / 1.0f).setScale(1,
+		float interval = new BigDecimal(5.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
 		attribute.setInterval(interval);
 		attributeHelper = new AttributeHelper(attribute);

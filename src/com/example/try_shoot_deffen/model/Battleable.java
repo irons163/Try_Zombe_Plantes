@@ -6,7 +6,7 @@ public interface Battleable {
 //	public boolean isInBattleRange(BattleableSprite battleable);
 //	public void attack(BattleableSprite battleable);
 	
-	public void checkIfInBattleRangeThenAttack(List<BattleableSprite> battleables);
+	public boolean checkIfInBattleRangeThenAttack(List<BattleableSprite> battleables);
 	
 	public void beAttacked(WeapenSprite weapenSprite);
 	

@@ -12,7 +12,7 @@ import com.example.try_shoot_deffen.model.MapTileObject;
 public class MapTileUtil {
 	private MapTileObject[][] mapTileObjects = new MapTileObject[5][5];
 	
-	private float offsetX = 100.0f;
+	private float offsetX = 150.0f;
 	private float offsetY = 100.0f;
 	
 	public MapTileUtil(){
@@ -22,7 +22,7 @@ public class MapTileUtil {
 	private void init(){
 		for(int i = 0; i < mapTileObjects.length; i++){
 			for(int j = 0; j < mapTileObjects[i].length; j++){
-				mapTileObjects[i][j] = new MapTileObject(i*150+offsetX, j*150+offsetY, false);
+				mapTileObjects[i][j] = new MapTileObject(i*230+offsetX, j*150+offsetY, false);
 				mapTileObjects[i][j].setBitmapAndAutoChangeWH(BitmapUtil.hp);
 			}
 		}

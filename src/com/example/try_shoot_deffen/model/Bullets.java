@@ -28,7 +28,7 @@ import com.example.try_shoot_deffen.utils.BitmapUtil;
 import com.example.try_shoot_deffen.utils.CommonUtil;
 import com.example.try_shoot_deffen.utils.EffectUtil;
 
-public class Bullets extends WeapenSprite{
+public class Bullets extends BaseBullet{
 
 	MovementAction movementActionShoot;
 	MovementAction movementAction;
@@ -677,11 +677,11 @@ interface BulletsEventListener{
 	void willAttack(BattleableSprite battleableSprite);
 }
 
-BulletsEventListener bulletsEventListener;
-
-public void setBulletsEventListener(BulletsEventListener bulletsEventListener){
-	this.bulletsEventListener = bulletsEventListener;
-}
+//BulletsEventListener bulletsEventListener;
+//
+//public void setBulletsEventListener(BulletsEventListener bulletsEventListener){
+//	this.bulletsEventListener = bulletsEventListener;
+//}
 
 @Override
 public void attack(BattleableSprite battleable) {
@@ -696,16 +696,19 @@ public void attack(BattleableSprite battleable) {
 }
 
 @Override
-public void checkIfInBattleRangeThenAttack(
+public boolean checkIfInBattleRangeThenAttack(
 		List<BattleableSprite> battleables) {
 	// TODO Auto-generated method stub
+	boolean isInBattleRange = false;
 	for(BattleableSprite battleableSprite : battleables){
-		boolean isInBattleRange = isInBattleRange(battleableSprite);
+		isInBattleRange = isInBattleRange(battleableSprite);
 		if(isInBattleRange){
 			attack(battleableSprite);
 			break;
 		}	
 	}
+	
+	return isInBattleRange;
 }
 
 }

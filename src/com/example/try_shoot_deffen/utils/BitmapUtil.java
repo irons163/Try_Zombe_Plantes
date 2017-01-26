@@ -314,12 +314,15 @@ public static Bitmap bar;
 		explode = createBitmap(explode, (float)hand.getWidth()/explode.getWidth());
 		
 		hamster_injure = BitmapFactory.decodeResource(context.getResources(), R.drawable.hamster_injure);
-		hamster_injure = createBitmap(hamster_injure, CommonUtil.screenWidth/hamsterPersentByScreen/hamster_injure.getWidth());
+//		hamster_injure = createBitmap(hamster_injure, CommonUtil.screenWidth/hamsterPersentByScreen/hamster_injure.getWidth());
+		hamster_injure = createBitmap(hamster_injure, CommonUtil.screenHeight/hamsterPersentByScreen/hamster_injure.getHeight());
 		
 		float bulletPersentByScreen = 10.0f;
 		bullet = createBitmap(bullet, CommonUtil.screenWidth/bulletPersentByScreen*3.0f/bullet.getWidth());
 		bullet_peanut = createBitmap(bullet_peanut, CommonUtil.screenWidth/bulletPersentByScreen*8.0f/bullet_peanut.getWidth());
 	
+		bullet01 = createBitmap(bullet01, CommonUtil.screenWidth/bulletPersentByScreen/bullet.getWidth());
+		
 		start_bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.start);
 		start_bmp = createBitmap(start_bmp, CommonUtil.cat_bg_height/3.0f*2/start_bmp.getHeight());
 		

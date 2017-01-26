@@ -53,6 +53,10 @@ public class MyGameController extends GameController{
 			
 			LinearLayout linearLayout = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame1);
 			LinearLayout linearLayout2 = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame2);
+			LinearLayout linearLayout3 = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame3);
+			LinearLayout linearLayout4 = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame4);
+			LinearLayout linearLayout5 = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame5);
+			LinearLayout linearLayout6 = (LinearLayout) view2.getView().findViewById(R.id.card_view_frame6);
 			
 			@Override
 			public void onClick(View v) {
@@ -62,11 +66,55 @@ public class MyGameController extends GameController{
 					DefenerBuilder.select = 0;
 					linearLayout.setBackgroundResource(R.drawable.frame);
 					linearLayout2.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout3.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout4.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout5.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout6.setBackgroundColor(Color.TRANSPARENT);
 					break;
 				case R.id.card_imageView2:
 					DefenerBuilder.select = 1;
 					linearLayout2.setBackgroundResource(R.drawable.frame);
 					linearLayout.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout3.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout4.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout5.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout6.setBackgroundColor(Color.TRANSPARENT);
+					break;
+				case R.id.card_imageView3:
+					DefenerBuilder.select = 2;
+					linearLayout3.setBackgroundResource(R.drawable.frame);
+					linearLayout.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout2.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout4.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout5.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout6.setBackgroundColor(Color.TRANSPARENT);
+					break;
+				case R.id.card_imageView4:
+					DefenerBuilder.select = 3;
+					linearLayout4.setBackgroundResource(R.drawable.frame);
+					linearLayout.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout2.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout3.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout5.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout6.setBackgroundColor(Color.TRANSPARENT);
+					break;
+				case R.id.card_imageView5:
+					DefenerBuilder.select = 4;
+					linearLayout5.setBackgroundResource(R.drawable.frame);
+					linearLayout.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout2.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout3.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout4.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout6.setBackgroundColor(Color.TRANSPARENT);
+					break;
+				case R.id.card_imageView6:
+					DefenerBuilder.select = 5;
+					linearLayout6.setBackgroundResource(R.drawable.frame);
+					linearLayout.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout2.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout3.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout4.setBackgroundColor(Color.TRANSPARENT);
+					linearLayout5.setBackgroundColor(Color.TRANSPARENT);
 					break;
 				default:
 					break;
@@ -83,6 +131,22 @@ public class MyGameController extends GameController{
 		ImageView imageView2 = (ImageView) view2.getView().findViewById(R.id.card_imageView2);
 		imageView2.setImageBitmap(BitmapUtil.bullet01);
 		imageView2.setOnClickListener(clickListener);
+		
+		ImageView imageView3 = (ImageView) view2.getView().findViewById(R.id.card_imageView3);
+		imageView3.setImageBitmap(BitmapUtil.bullet01);
+		imageView3.setOnClickListener(clickListener);
+		
+		ImageView imageView4 = (ImageView) view2.getView().findViewById(R.id.card_imageView4);
+		imageView4.setImageBitmap(BitmapUtil.bullet01);
+		imageView4.setOnClickListener(clickListener);
+		
+		ImageView imageView5 = (ImageView) view2.getView().findViewById(R.id.card_imageView5);
+		imageView5.setImageBitmap(BitmapUtil.bullet01);
+		imageView5.setOnClickListener(clickListener);
+		
+		ImageView imageView6 = (ImageView) view2.getView().findViewById(R.id.card_imageView6);
+		imageView6.setImageBitmap(BitmapUtil.bullet01);
+		imageView6.setOnClickListener(clickListener);
 		
 		view.addSubView(view2);	
 	}

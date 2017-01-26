@@ -11,6 +11,13 @@ public class BattleableSprite extends Sprite implements Battleable{
 	protected float battleInviable = 1.0f;
 	protected WeapenSprite weapenSprite;
 	protected AttributeInfo attributeInfo;
+	boolean isNeedRemove = false;
+	protected boolean isBattleable = true;
+	protected BattleableSpriteType battleableSpriteType = BattleableSpriteType.Self;
+	
+	public enum BattleableSpriteType{
+		Self, Enemy
+	}
 	
 	public BattleableSprite(float x, float y, boolean autoAdd) {
 		super(x, y, autoAdd);
@@ -54,12 +61,25 @@ public class BattleableSprite extends Sprite implements Battleable{
 ////			battleable.beAttacked(null);
 //	}
 	
+	public boolean checkIfInBattleRangeThenAttack(
+			List<BattleableSprite> battleablesSelf, List<BattleableSprite> battleablesEnemy) {
+		boolean wasAttacked = checkIfInBattleRangeThenAttack(battleablesSelf);
+		if(!wasAttacked)
+			wasAttacked = checkIfInBattleRangeThenAttack(battleablesEnemy);
+		
+		return wasAttacked;
+	}
+	
 	@Override
-	public void checkIfInBattleRangeThenAttack(
+	public boolean checkIfInBattleRangeThenAttack(
 			List<BattleableSprite> battleables) {
 		// TODO Auto-generated method stub
+
+		if(!isBattleable())
+			return false;
+			
 		if(weapenSprite!=null)
-			weapenSprite.checkIfInBattleRangeThenAttack(battleables);
+			return weapenSprite.checkIfInBattleRangeThenAttack(battleables);
 		else
 		for(BattleableSprite battleableSprite : battleables){
 //			boolean isInBattleRange = isInBattleRange(battleableSprite);
@@ -72,6 +92,16 @@ public class BattleableSprite extends Sprite implements Battleable{
 			
 		}
 		
+		return false;
+		
+	}
+	
+	public boolean isBattleable(){
+		return isBattleable;
+	}
+	
+	public void setIsBattleable(boolean isBattleable){
+		this.isBattleable = isBattleable;
 	}
 
 	public float getSpeed(){
@@ -105,7 +135,7 @@ public class BattleableSprite extends Sprite implements Battleable{
 	}
 	
 	public enum BattleSpriteInjureType{
-		None, Normal, Frozen, Fire
+		None, Normal, Frozen, Fire, Heal
 	}
 	
 	BattleSpriteInjureType battleSpriteInjureType;
@@ -126,5 +156,11 @@ public class BattleableSprite extends Sprite implements Battleable{
 		}
 	}
 
-
+	public boolean isNeedRemove(){
+		return isNeedRemove;
+	}
+	
+	public BattleableSpriteType getBattleableSpriteType(){
+		return battleableSpriteType;
+	}
 }

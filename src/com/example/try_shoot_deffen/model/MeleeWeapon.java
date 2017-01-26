@@ -21,7 +21,14 @@ public class MeleeWeapon extends WeapenSprite{
 		super(x, y, autoAdd);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		initAttribute();
+//		initAttribute();
+	}
+	
+	public MeleeWeapon(Context context, float x, float y, boolean autoAdd, float interval) {
+		super(x, y, autoAdd, interval);
+		// TODO Auto-generated constructor stub
+		this.context = context;
+//		initAttribute();
 	}
 	
 	@Override
@@ -62,9 +69,14 @@ public class MeleeWeapon extends WeapenSprite{
 		
 		lastShootTime = currentTime;
 		
+		noATKRangeListener.willDoEffect(effect, battleable);
+		
 		IEffect effect = getWeapenEffect();
-		if(getWeapenEffect()!=null)
+		
+		if(effect!=null)
 			effect.doEffect(this, battleable);
+		
+		noATKRangeListener.attack(battleable);
 		
 //		final Bullets bullets = BulletsBuilder.createFrozenBullets(context, getX(), getY());
 //		bullets.setBulletsEventListener(new Bullets.BulletsEventListener() {
@@ -81,26 +93,29 @@ public class MeleeWeapon extends WeapenSprite{
 	}
 	
 	@Override
-	public void checkIfInBattleRangeThenAttack(
+	public boolean checkIfInBattleRangeThenAttack(
 			List<BattleableSprite> battleables) {
 		// TODO Auto-generated method stub
+		boolean isInBattleRange = false;
 		for(BattleableSprite battleableSprite : battleables){
-			boolean isInBattleRange = isInBattleRange(battleableSprite);
+			isInBattleRange = isInBattleRange(battleableSprite);
 			if(isInBattleRange){
 				attack(battleableSprite);
 				break;
 			}
 		}
+		return isInBattleRange;
 	}
 	
-	Attribute attribute;
-	AttributeHelper attributeHelper;
-	long lastShootTime;
-	
-	private void initAttribute() {
+	@Override
+	protected void initAttribute() {
 		attribute = new Attribute();
-		float interval = new BigDecimal(2.0f / 1.0f).setScale(1,
+		
+		if(interval<=-1){
+			interval = new BigDecimal(0.5f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
+		}
+		
 		attribute.setInterval(interval);
 		attributeHelper = new AttributeHelper(attribute);
 	}
@@ -119,4 +134,10 @@ public class MeleeWeapon extends WeapenSprite{
 		
 	}
 
+	@Override
+	public IEffect getWeapenEffect() {
+		// TODO Auto-generated method stub
+//		return super.getWeapenEffect();
+		return effect.cloneEffect();
+	}
 }

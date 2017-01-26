@@ -8,7 +8,7 @@ import com.example.try_shoot_deffen.model.BattleableSprite.BattleSpriteInjureTyp
 import com.example.try_shoot_deffen.model.WeapenSprite;
 import com.example.try_shoot_deffen.utils.IntervalTimer;
 
-public class FrozenEffect extends BaseEffect{
+public class StunEffect extends BaseEffect{
 	
 //	@Override
 //	public void doEffect(BattleableSprite battleableSpriteAttacker,
@@ -17,8 +17,8 @@ public class FrozenEffect extends BaseEffect{
 //		battleableSpriteBeAttacked.setSpeed(battleableSpriteBeAttacked.getSpeed()*1.5f);
 //	}
 	
-	public FrozenEffect(){
-		float interval = new BigDecimal(3.0f / 1.0f).setScale(1,
+	public StunEffect(){
+		float interval = new BigDecimal(2.0f / 1.0f).setScale(1,
 				BigDecimal.ROUND_HALF_UP).floatValue();
 		intervalTimer = new IntervalTimer(interval);
 		intervalTimer.isFirstTimeDelay(true);
@@ -31,15 +31,18 @@ public class FrozenEffect extends BaseEffect{
 		currentEffectTimes = 0;
 	}
 	
+	private float battleableSpriteBeAttackedSpeedBeforeDoEffect;
+	
 	@Override
 	protected void addEffectAndDoEffectDetail(WeapenSprite weapenSprite,
 			BattleableSprite battleableSpriteBeAttacked){
-		battleableSpriteBeAttacked.setSpeed(battleableSpriteBeAttacked.getSpeed()*1.5f);
+		battleableSpriteBeAttackedSpeedBeforeDoEffect = battleableSpriteBeAttacked.getSpeed();
+		battleableSpriteBeAttacked.setSpeed(10000);
 	}
 	
 	@Override
 	protected void removeEffectAndDoEffectDetail(BattleableSprite battleableSprite){
-		battleableSprite.setSpeed(battleableSprite.getSpeed()/1.5f);
+		battleableSprite.setSpeed(1/10000.0f);
 	}
 
 	@Override
